@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+smitty() {
+  echo === $@ ===
+  eval $@
+  echo
+}
+
+smitty docker version
+smitty docker info

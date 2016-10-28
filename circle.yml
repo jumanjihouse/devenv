@@ -1,0 +1,26 @@
+# https://circleci.com/docs/docker
+machine:
+  pre:
+    - sudo curl -sSLo /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.10.0-circleci'
+    - echo 'DOCKER_OPTS="-s btrfs -D"' | sudo tee /etc/default/docker
+    - echo 'env container=yes' | sudo tee -a /etc/init/docker.conf
+  services:
+    - docker
+
+dependencies:
+  override:
+    - script/info
+    - script/build
+
+test:
+  override:
+    - script/test
+
+# https://circleci.com/docs/configuration#deployment
+# https://circleci.com/docs/environment-variables
+deployment:
+  master:
+    branch: master
+    owner: jumanjihouse
+    commands:
+      - script/publish
