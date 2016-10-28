@@ -7,7 +7,7 @@ LABEL \
     org.label-schema.description="minimal image for data volume" \
     org.label-schema.url="https://github.com/jumanjihouse/devenv" \
     org.label-schema.vcs-url="https://github.com/jumanjihouse/devenv.git" \
-    org.label-schema.docker.dockerfile="/Dockerfile.runtime" \
+    org.label-schema.docker.dockerfile="/state/Dockerfile" \
     org.label-schema.vcs-type="Git" \
     org.label-schema.vcs-ref="${GIT_REF}" \
     org.label-schema.license="GPLv2" \
