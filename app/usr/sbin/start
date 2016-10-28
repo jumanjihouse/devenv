@@ -1,0 +1,61 @@
+#!/bin/sh
+set -e
+set -x
+
+# Env vars from systemd:
+# - GITHUB_HANDLE
+# - DUO_USERNAME
+# - IKEY
+# - SKEY
+
+# Create host keys if necessary.
+# These exist in user data volume, so they persist across rebuilds.
+# sshd_config specifies to use these files.
+mkdir -p /media/state/etc/ssh/ || :
+for key_type in ed25519 rsa; do
+  key_file=/media/state/etc/ssh/ssh_host_${key_type}_key
+  [ -s ${key_file} ] || ssh-keygen -q -f ${key_file} -N '' -t ${key_type}
+done
+
+if [ -n "${GITHUB_HANDLE}" ]; then
+  mkdir -p /home/user/.ssh/ || :
+  (
+    keyfile=/home/user/.ssh/authorized_keys
+    IFS=$'\n'
+    for key in $(/usr/bin/github_pubkeys); do
+      grep "${key}" ${keyfile} &> /dev/null || echo ${key} >> ${keyfile}
+    done
+  )
+fi
+
+for file in .bashrc .bash_profile .bash_logout; do
+  if [ ! -x /home/user/${file} ]; then
+    cp -f /etc/skel/${file} /home/user/${file}
+  fi
+done
+
+# Fix up permissions. This is really only needed on the first run.
+chown user:user /home/user/
+chown -R user:user /home/user/.ssh/
+
+# Fix up permissions. This is really only needed on the first run,
+# but can be useful if user messes up their permissions.
+chmod 0700 /home/user/.ssh/
+chmod 0600 /home/user/.ssh/*
+
+if [ -n "${IKEY}" -a -n "${SKEY}" -a -n "${HOST}" -a -n "${DUO_USERNAME}" ]; then
+  target_config="/etc/duo/${DUO_USERNAME}.conf"
+
+  cp /etc/duo/login_duo.conf ${target_config}
+  sed -i "s/^ikey.*/ikey = ${IKEY}/g" ${target_config}
+  sed -i "s/^skey.*/skey = ${SKEY}/g" ${target_config}
+  sed -i "s/^host.*/host = ${HOST}/g" ${target_config}
+
+  # /etc/duo/login_duo.conf must be readable only by user 'user'
+  chown user:user ${target_config}
+  chmod 0400 ${target_config}
+
+  exec /usr/sbin/sshd -D -e -o ForceCommand="/usr/sbin/login_duo -c /etc/duo/${DUO_USERNAME}.conf -f ${DUO_USERNAME}"
+else
+  exec /usr/sbin/sshd -D -e
+fi

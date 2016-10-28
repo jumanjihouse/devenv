@@ -1,0 +1,318 @@
+# vim: set ts=2 sw=2 ai et:
+####################################################################
+# This is the sshd server system-wide configuration file.
+# See sshd_config(5) for more information.
+#
+# The local strategy for options in sshd_config is to
+# remove commented lines when we override values.
+# This strategy is intended to...
+#
+# * Promote unique lines in the config to
+#   avoid accidental conflicts or duplicates.
+# * Promote clarity.
+#
+# The upstream strategy for options in sshd_config
+# shipped with OpenSSH is to...
+#
+# * Specify options with their default value where possible,
+#   but leave them commented.
+# * Uncommented options change a default value.
+#
+# References to CCE and NIST mappings are from http://goo.gl/XmMkb
+# as published within http://usgcb.nist.gov/usgcb/rhel_content.html
+#
+# NIST 800-53 is available at
+# http://csrc.nist.gov/publications/PubsSPs.html
+#
+# /etc/ssh/sshd_config
+####################################################################
+
+
+
+
+
+# CCE-14491-5 Use appropriate ciphers for SSH
+# NIST 800-53 mapping: SC-13
+#
+# Enforce the use of ciphers which are FIPS-approved.
+#
+# The default is:
+#   aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,
+#   aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,
+#   aes256-cbc,arcfour
+#
+# Recommended:
+#   aes128-ctr,aes192-ctr,aes256-ctr
+#
+# Symmetric ciphers are used to encrypt the data after the initial
+# key exchange and authentication is complete.
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+
+
+# Encryption provides confidentiality;
+# message authentication code provides integrity.
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
+
+
+# Use strong, perfect forward secrecy for key exchange
+# to ensure that the server and the client
+# share a secret no one else knows.
+# See https://stribika.github.io/2015/01/04/secure-secure-shell.html
+# https://github.com/stribika/stribika.github.io/commits/master/_posts/2015-01-04-secure-secure-shell.md
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+
+
+
+# HostKeys
+HostKey /media/state/etc/ssh/ssh_host_rsa_key
+HostKey /media/state/etc/ssh/ssh_host_ed25519_key
+
+
+
+# CCE-4325-7 Disable SSH protocol version 1
+# NIST 800-53 mapping: CM-7
+#
+# Disable legacy (protocol version 1) support in the server for new
+# installations. In future the default will change to require explicit
+# activation of protocol 1
+#
+# The default is '2'.
+#
+Protocol 2
+
+
+# Use IPv4 only.
+AddressFamily inet
+Port 2222
+ListenAddress 0.0.0.0
+
+
+
+# Logging
+SyslogFacility AUTHPRIV
+LogLevel INFO
+
+
+# Be informative after successful login.
+PrintMotd yes
+
+
+# Authentication:
+#LoginGraceTime 2m
+#StrictModes yes
+#MaxAuthTries 6
+#MaxSessions 10
+#RSAAuthentication yes
+#PubkeyAuthentication yes
+
+
+
+AuthorizedKeysFile .ssh/authorized_keys
+
+
+
+# Caution: Do not run sshd in debug mode or else
+# this won't work as you expect.
+AuthorizedKeysCommand /usr/bin/github_pubkeys
+AuthorizedKeysCommandUser user
+
+
+
+
+
+# CCE-4370-3 Disable SSH host-based authentication
+# NIST 800-53 mapping: CM-7
+#
+# Prevent hosts from unilaterally trusting one another,
+# even within an organization.
+#
+# The default is 'no'.
+#
+HostbasedAuthentication no
+
+
+
+
+
+# CCE-4475-0 Disable emulation of the rsh command through the ssh server
+# NIST 800-53 mapping: SC-7
+#
+# Prevent SSH from emulating the behavior of the obsolete rsh
+# command, which would allow users to enable insecure access to
+# their accounts via .rhosts files.
+#
+# Don't read the user's ~/.rhosts and ~/.shosts files
+#
+# The default is 'yes'.
+#
+IgnoreRhosts yes
+
+
+
+
+# CCE-3660-8 Disable remote connections from accounts with empty passwords
+# NIST 800-53 mapping: AC-17, SC-7
+#
+# Prevent users with blank passwords from accessing the system remotely.
+# All user accounts should have complex passwords that meet password requirements.
+#
+# The default is 'no'.
+#
+PermitEmptyPasswords no
+
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication no
+
+
+# "no" means disable s/key passwords.
+ChallengeResponseAuthentication no
+
+
+
+
+AllowTcpForwarding no
+X11Forwarding no
+AllowAgentForwarding yes
+#GatewayPorts no
+#X11DisplayOffset 10
+#X11UseLocalhost yes
+#PrintLastLog yes
+#TCPKeepAlive yes
+#UseLogin no
+#UsePrivilegeSeparation yes
+#Compression delayed
+#ShowPatchLevel no
+#PidFile /var/run/sshd.pid
+#MaxStartups 10
+#PermitTunnel no
+#ChrootDirectory none
+
+
+
+
+# CCE-3845-5 idle timeout interval should be set to an appropriate value
+# NIST 800-53 mapping: CM-7, AC-11
+#
+# Per CCE: An idle user should be automatically logged out after 5 minutes of inactivity.
+# This prevents the system from keeping open ssh connections that are not being used.
+#
+# Sets a timeout interval in seconds after which if no data has
+# been received from the client, sshd(8) will send a message through
+# the encrypted channel to request a response from the client.
+#
+# The default is 0, indicating that these messages will not be sent to the client.
+#
+# Recommended by CCE: 900
+#
+ClientAliveInterval 900
+
+
+
+# CCE-14061-6 'keep alive' message count should be set to an appropriate value.
+# NIST 800-53 mapping: SC-10
+#
+# Per CCE: An idle user should be automatically logged out after 5 minutes of inactivity.
+# This prevents the system from keeping open ssh connections that are not being used.
+#
+# The client alive mechanism is valuable when the client or server
+# depend on knowing when a connection has become inactive.
+# If ClientAliveInterval (see above) is set to 15, and
+# ClientAliveCountMax is left at the default, unresponsive SSH
+# clients will be disconnected after approximately 45 seconds.
+#
+# The default value is 3.
+#
+# Recommended by CCE: 0
+#
+ClientAliveCountMax 0
+
+
+
+# CCE-4431-3 SSH warning banner should be enabled
+# NIST 800-53 mapping: AC-3, CM-6, AC-8
+#
+# Users should see a message before they the logon process.
+#
+# The contents of the specified file are sent to the remote user
+# before authentication is allowed.
+# If the argument is 'none' then no banner is displayed.
+#
+# Default: none
+#
+# Recommended: /etc/issue
+#
+Banner /etc/issue
+
+
+
+
+# override default of no subsystems
+Subsystem sftp  /usr/libexec/openssh/sftp-server
+
+
+
+
+
+
+# Specifies whether sshd(8) should look up the remote host name
+# and check that the resolved host name for the remote IP address
+# maps back to the very same IP address.
+UseDNS yes
+
+
+
+
+# CCE-4387-7 Disable root login via SSH
+# NIST 800-53 mapping: AC-17, SC-7
+#
+# Prevent the root user from logging in directly over the
+# network. It reduces auditable information about who ran privileged
+# commands on the system and allows direct attack attempts on
+# root's password
+#
+# The default is 'yes'.
+#
+# Recommended: 'no'
+#
+permitrootlogin no
+
+
+# Only the "user" user should have access to wormhole. Ever.
+AllowUsers user
+
+
+
+
+# CCE-14716-5 Users should not be allowed to set environment options
+# NIST 800-53 mapping: CM-7
+#
+# Prevents user from being able to present environment
+# options to the SSH daemon and potentially bypass some access
+# restrictions using mechanisms such as LD_PRELOAD.
+#
+# Prevent sshd(8) from procesesing:
+# * ~/.ssh/environment
+# environment= options in ~/.ssh/authorized_keys
+#
+# The default is 'no'.
+#
+PermitUserEnvironment no
+
+
+# Accept locale-related environment variables
+AcceptEnv LANG
+AcceptEnv LANGUAGE
+AcceptEnv LC_ADDRESS
+AcceptEnv LC_ALL
+AcceptEnv LC_COLLATE
+AcceptEnv LC_CTYPE
+AcceptEnv LC_IDENTIFICATION
+AcceptEnv LC_MEASUREMENT
+AcceptEnv LC_MESSAGES
+AcceptEnv LC_MONETARY
+AcceptEnv LC_NAME
+AcceptEnv LC_NUMERIC
+AcceptEnv LC_PAPER
+AcceptEnv LC_TELEPHONE
+AcceptEnv LC_TIME
+AcceptEnv XMODIFIERS
