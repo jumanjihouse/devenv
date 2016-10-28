@@ -5,7 +5,7 @@ set -e
 
 docker login -e ${email} -u ${user} -p ${pass}
 
-if [ -x /dev/shm/publish_state ]; then
+if [ -e /dev/shm/publish_state ]; then
   docker push jumanjiman/state:${CACHED_REF}
   docker push jumanjiman/state:latest
 fi
