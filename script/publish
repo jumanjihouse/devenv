@@ -17,3 +17,9 @@ for image in $(docker images | awk '/jumanjiman\/devenv/ {print $1":"$2 }'); do
 done
 
 docker logout
+
+# Update microbadger metadata for state image.
+curl -sS 'https://hooks.microbadger.com/images/jumanjiman/state/K9GX-acN8HGx2rbyQrmn2hI6SQ4='
+
+# Update microbadger metadata for app image.
+curl -sS 'https://hooks.microbadger.com/images/jumanjiman/devenv/NPIdqj5J8GhG6vW5H_0RzDAXT_w='
