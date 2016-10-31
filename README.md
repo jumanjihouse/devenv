@@ -2,6 +2,7 @@ Overview
 ========
 
 Containerized development environment
+with optional [Duo](https://duo.com/) two-factor authentication
 that consists of two containers per user:
 
 * *App*: stateless, upgradable, ephemeral applications
@@ -27,7 +28,93 @@ Docker Hub:
 How-to
 ======
 
-to-do
+Background
+----------
+
+For authentication, we assume two things:
+
+* Duo configuration variables are properly set in `global.conf`,
+  probably controlled by an organization's administrator(s)
+  with proper config management.
+
+* The user controls their own SSH authorized public keys on Github.
+  The app container fetches these public keys at each login attempt.
+
+The instructions below rely on systemd instantiated units to
+create per-user development environments.
+
+* `/etc/systemd/system/devenv\@.service` is the systemd unit file.
+
+* `/etc/devenv/global.conf` is a set of default configuration parameters.
+
+* `/etc/devenv/<user>.conf` provides per-user parameters, such as
+  the user's SSH port, Github handle, and Duo username.
+
+* `/etc/devenv/login_duo.conf` is a template that gets copied
+  into the per-user app container and adapted for each user
+  based on both `global.conf` and `<user>.conf`.
+
+:warning: If you do not use Duo for two-factor authentication,
+set `DUO=false` in `/etc/devenv/global.conf`.
+
+
+Quick-start
+-----------
+
+1. Spin up a systemd-based host, such as a CoreOS VM on Digital Ocean,
+   then login to the new host.
+
+1. Clone this repo to the new host:
+
+   ```
+   git clone https://github.com/jumanjihouse/devenv.git
+   cd devenv/
+   ```
+
+1. Copy the startup configs to the new host:
+
+   ```
+   sudo cp -r host-configs/* /
+   ```
+
+1. Edit `/etc/devenv/global.conf` to specify options that should
+   apply by default to every devenv instance.
+
+1. Copy `/etc/devenv/user.conf` to a per-user config and edit:
+
+   ```
+   sudo cp /etc/devenv/user.conf /etc/devenv/yourname.conf
+   sudo vi /etc/devenv/yourname.conf
+   ```
+
+   The name of the per-user config file only matters for systemd.
+   The name of the file is ignored.
+
+1. Start the per-user instance:
+
+   ```
+   sudo systemctl daemon-reload
+   sudo systemctl start devenv@yourname
+
+   journalctl -fu devenv@yourname
+   ```
+
+
+Upgrade the app image
+---------------------
+
+1. Edit the global config to specify a recent docker tag:
+
+   ```
+   sudo vi /etc/devenv/global.conf
+   ```
+
+1. Restart your devenv instance:
+
+   ```
+   sudo systemctl restart devenv@yourname
+   journalctl -fu devenv@yourname
+   ```
 
 
 Administrivia
