@@ -30,20 +30,18 @@ fi
 STATE_GIT_REF=$(git rev-list --abbrev-commit --max-count 1 HEAD -- state/Dockerfile)
 
 if [ "x${CACHED_REF}" != "x${STATE_GIT_REF}" ]; then
-  TAG=${GIT_REF}
-
   docker build \
     --rm=false \
-    --build-arg GIT_REF=${GIT_REF} \
+    --build-arg GIT_REF=${STATE_GIT_REF} \
     -t jumanjiman/state \
     state/
 
-  docker tag jumanjiman/state jumanjiman/state:${TAG}
+  docker tag jumanjiman/state jumanjiman/state:${STATE_GIT_REF}
   touch /dev/shm/publish_state
 
   if [ -d ~/deps ]; then
     rm -f ~/deps/state.tar || :
-    docker save -o ~/deps/state.tar jumanjiman/state
+    docker save -o ~/deps/state.tar jumanjiman/state jumanjiman/state:${STATE_GIT_REF}
   fi
 fi
 

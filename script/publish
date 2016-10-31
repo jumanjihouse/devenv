@@ -6,8 +6,10 @@ set -e
 docker login -e ${email} -u ${user} -p ${pass}
 
 if [ -e /dev/shm/publish_state ]; then
-  docker push jumanjiman/state:${CACHED_REF}
-  docker push jumanjiman/state:latest
+  # Latest git ref for "state/Dockerfile".
+  STATE_GIT_REF=$(git rev-list --abbrev-commit --max-count 1 HEAD -- state/Dockerfile)
+
+  docker push jumanjiman/state:${STATE_GIT_REF}
 fi
 
 for image in $(docker images | awk '/jumanjiman\/devenv/ {print $1":"$2 }'); do
