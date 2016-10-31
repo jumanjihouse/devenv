@@ -44,3 +44,10 @@ wget
 pips="
 docker-compose
 "
+
+convenience="
+cyrus-sasl
+cyrus-sasl-gssapi
+mutt
+tmux
+"
