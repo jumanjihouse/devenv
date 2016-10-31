@@ -1,0 +1,52 @@
+[Unit]
+Description=%i app container
+After=docker.service
+Requires=docker.service
+
+[Service]
+# Enable %i.conf to override global.conf
+# as described in systemd.exec(5).
+EnvironmentFile=/etc/devenv/global.conf
+EnvironmentFile=/etc/devenv/%i.conf
+ExecStartPre=-/usr/bin/docker rm %i
+ExecStartPre=-/usr/bin/docker create --name %i-data jumanjiman/state:${STATE_GIT_REF}
+# We drop all kernel capabilities, then
+# add back the ones we absolutely need:
+#
+# cap_sys_chroot: avoid chroot("/var/empty"): Operation not permitted [preauth]
+# cap_setgid: avoid setgroups: Operation not permitted [preauth]
+# cap_setuid: avoid setresuid 22: Operation not permitted [preauth]
+# cap_kill: avoid cleanup_exit: kill(9): Operation not permitted
+# cap_chown: avoid chown(/dev/pts/0, 1000, 5) failed: Operation not permitted
+# cap_fowner: avoid chmod(/dev/pts/0, 0622) failed: Operation not permitted
+# cap_dac_override: allow sed in start
+#
+ExecStart=/usr/bin/docker run \
+  --name         %i \
+  --volumes-from %i-data \
+  --volume       /etc/devenv/login_duo.conf:/etc/duo/login_duo.conf:ro \
+  --env          INSTANCE=%i \
+  --env          DUO \
+  --env          DUO_USERNAME \
+  --env          IKEY \
+  --env          SKEY \
+  --env          HOST \
+  --env          GITHUB_HANDLE \
+  --memory       ${MAX_RAM} \
+  --publish      ${PORT}:2222 \
+  --hostname     ${SANDBOX_HOSTNAME} \
+  --cap-drop     all \
+  --cap-add      sys_chroot \
+  --cap-add      setgid \
+  --cap-add      setuid \
+  --cap-add      kill \
+  --cap-add      chown \
+  --cap-add      fowner \
+  --cap-add      dac_override \
+  ${BASE_IMAGE}:${BASE_TAG}
+ExecStop=/usr/bin/docker stop %i
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
