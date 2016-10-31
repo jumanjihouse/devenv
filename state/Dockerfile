@@ -4,7 +4,7 @@ ARG GIT_REF
 
 LABEL \
     org.label-schema.name="jumanjiman/state" \
-    org.label-schema.description="minimal image for data volume" \
+    org.label-schema.description="minimal image for devenv data volume" \
     org.label-schema.url="https://github.com/jumanjihouse/devenv" \
     org.label-schema.vcs-url="https://github.com/jumanjihouse/devenv.git" \
     org.label-schema.docker.dockerfile="/state/Dockerfile" \
