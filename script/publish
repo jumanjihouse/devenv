@@ -2,16 +2,58 @@
 set -e
 
 . script/functions
+. ENV
 
 docker login -e ${email} -u ${user} -p ${pass}
 
-if [ -e /dev/shm/publish_state ]; then
-  docker push jumanjiman/state:${CACHED_REF}
-  docker push jumanjiman/state:latest
-fi
+# Assign new tags to the CI build of devenv app image.
+docker tag jumanjiman/devenv:ci jumanjiman/devenv:${TAG}
+docker tag jumanjiman/devenv:ci jumanjiman/devenv:latest
 
+# Remove the CI tag of app image.
+docker rmi jumanjiman/devenv:ci
+
+# Push the remaining tags for app image.
 for image in $(docker images | awk '/jumanjiman\/devenv/ {print $1":"$2 }'); do
   docker push ${image}
 done
+# We're done handling the app image.
+
+# Begin special handling for the state image.
+# We only want to publish the state image when it truly changes.
+
+# Label from CI state image.
+REF_CI=$(docker inspect -f '{{ index .Config.Labels "org.label-schema.vcs-ref" }}' jumanjiman/state:ci)
+
+# Discover label from cached state image.
+REF_CACHE=""
+if [ -s ~/deps/state.tar ]; then
+  echo "=== load cache ==="
+
+  echo
+  echo "state image before loading cache"
+  docker images | grep -e REPOSITORY -e state
+
+  docker load -i ~/deps/state.tar
+  REF_CACHE=$(docker inspect -f '{{ index .Config.Labels "org.label-schema.vcs-ref" }}' jumanjiman/state:latest)
+
+  echo
+  echo "state image after loading cache"
+  docker images | grep -e REPOSITORY -e state
+fi
+
+if [ "x${REF_CI}" != "x${REF_CACHE}" ]; then
+  docker tag jumanjiman/state:ci jumanjiman/state:${STATE_GIT_REF}
+  docker tag jumanjiman/state:ci jumanjiman/state:latest
+  docker rmi jumanjiman/state:ci
+
+  docker push jumanjiman/state:${STATE_GIT_REF}
+  docker push jumanjiman/state:latest
+
+  if [ -d ~/deps ]; then
+    rm -f ~/deps/state.tar || :
+    docker save -o ~/deps/state.tar jumanjiman/state:${STATE_GIT_REF} jumanjiman/state:latest
+  fi
+fi
 
 docker logout
