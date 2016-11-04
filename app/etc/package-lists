@@ -26,6 +26,8 @@ git
 git-bash-completion
 git-perl
 git-svn
+go
+go-tools
 grep
 jq
 less
