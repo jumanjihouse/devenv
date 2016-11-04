@@ -14,21 +14,13 @@
 #   Unable to negotiate a key exchange method
 #
 Host github.com gist.github.com
-    KexAlgorithms curve25519-sha256@libssh.org
-    KexAlgorithms diffie-hellman-group-exchange-sha256
-    KexAlgorithms diffie-hellman-group-exchange-sha1
-    KexAlgorithms diffie-hellman-group14-sha1
+    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
 
 Host *
     AddressFamily any
     BatchMode no
     CheckHostIP yes
-    Ciphers chacha20-poly1305@openssh.com
-    Ciphers aes256-gcm@openssh.com
-    Ciphers aes128-gcm@openssh.com
-    Ciphers aes256-ctr
-    Ciphers aes192-ctr
-    Ciphers aes128-ctr
+    Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
     ConnectTimeout 50
     EscapeChar ~
     ForwardAgent no
@@ -36,16 +28,8 @@ Host *
     ForwardX11Trusted no
     HostbasedAuthentication no
     IdentityFile ~/.ssh/id_rsa
-    KexAlgorithms curve25519-sha256@libssh.org
-    KexAlgorithms diffie-hellman-group-exchange-sha256
-    MACs hmac-sha2-512-etm@openssh.com
-    MACs hmac-sha2-256-etm@openssh.com
-    MACs hmac-ripemd160-etm@openssh.com
-    MACs umac-128-etm@openssh.com
-    MACs hmac-sha2-512
-    MACs hmac-sha2-256
-    MACs hmac-ripemd160
-    MACs umac-128@openssh.com
+    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
     Port 22
     Protocol 2
     RhostsRSAAuthentication no
