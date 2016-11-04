@@ -26,6 +26,7 @@ git
 git-bash-completion
 git-perl
 git-svn
+grep
 jq
 less
 make
