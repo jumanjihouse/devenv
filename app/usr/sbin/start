@@ -29,7 +29,7 @@ if [ -n "${GITHUB_HANDLE}" ]; then
 fi
 
 for file in .bashrc .bash_profile .bash_logout; do
-  if [ ! -x /home/user/${file} ]; then
+  if [ ! -e /home/user/${file} ]; then
     cp -f /etc/skel/${file} /home/user/${file}
   fi
 done
