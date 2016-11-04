@@ -16,6 +16,7 @@ openssh-client
 
 devtools="
 bind-tools
+build-base
 bzr
 checkbashisms
 diffutils
@@ -31,7 +32,6 @@ go-tools
 grep
 jq
 less
-make
 ncurses
 patch
 patchutils
