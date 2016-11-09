@@ -43,6 +43,7 @@ tree
 vim
 vimdiff
 wget
+which
 "
 
 pips="
