@@ -40,6 +40,8 @@ py2-pip
 strace
 tar
 tree
+util-linux
+util-linux-bash-completion
 vim
 vimdiff
 wget
