@@ -23,6 +23,7 @@ diffutils
 docker-bash-completion
 docker-vim
 editorconfig
+file
 git
 git-bash-completion
 git-perl
