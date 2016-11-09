@@ -5,6 +5,11 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
+# Source global definitions
+if [ -f /etc/profile ]; then
+  . /etc/profile
+fi
+
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
