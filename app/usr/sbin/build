@@ -54,6 +54,11 @@ bats-${BATS_VER}/install.sh /usr/local
 rm -fr /tmp/bats*
 )
 
+# Install go server spec.
+GOSS_VER=0.3.2
+curl -sSL -o /usr/bin/goss https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VER}/goss-linux-amd64
+chmod 0755 /usr/bin/goss
+
 # Get tmux-bash-completions.
 curl -L -o /usr/share/bash-completion/completions/tmux \
 https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/master/completions/tmux
