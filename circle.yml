@@ -2,8 +2,6 @@
 machine:
   environment:
     BATS_VER: 0.4.0
-    # Version of docker to install in devenv via build script.
-    DOCKER_VERSION: 1.12.6
   pre:
     - sudo curl -sSLo /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.10.0-circleci'
     - echo 'DOCKER_OPTS="-s btrfs -D"' | sudo tee /etc/default/docker

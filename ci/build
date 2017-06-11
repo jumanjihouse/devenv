@@ -1,15 +1,19 @@
 #!/bin/sh
 set -e
 
-fail() {
-  echo $@ >&2
-  exit 1
-}
+cat > ci/vars <<EOF
+# This file (ci/vars) is automatically created by ci/build and
+# is never checked into version control.
+export BUILD_DATE=$(date +%Y%m%dT%H%M)
+export GIT_REF=$(git rev-parse --short HEAD)
+export TAG=\${BUILD_DATE}-git-\${GIT_REF}
+export CI_BUILD_URL=${CIRCLE_BUILD_URL}
 
-[ -z ${DOCKER_VERSION} ] && fail "You must set DOCKER_VERSION variable"
-BUILD_DATE=$(date +%Y%m%dT%H%M)
-GIT_REF=$(git rev-parse --short HEAD)
-TAG=${BUILD_DATE}-git-${GIT_REF}
+# Which version of Docker do we install in the image?
+export DOCKER_VERSION=1.12.6
+EOF
+
+. ci/vars
 
 docker build \
   --rm \
