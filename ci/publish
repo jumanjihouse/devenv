@@ -3,7 +3,7 @@ set -e
 
 . ci/functions
 
-docker login -e ${email} -u ${user} -p ${pass}
+docker login -u ${user} -p ${pass}
 
 if [ -e /dev/shm/publish_state ]; then
   # Latest git ref for "state/Dockerfile".
