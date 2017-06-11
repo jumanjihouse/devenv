@@ -23,12 +23,12 @@ dependencies:
     - tar -xf ~/deps/bats_v${BATS_VER}.tar.gz
     - sudo bats-${BATS_VER}/install.sh /usr/local
   override:
-    - script/info
-    - script/build
+    - ci/info
+    - ci/build
 
 test:
   override:
-    - script/test
+    - ci/test
 
 # https://circleci.com/docs/configuration#deployment
 # https://circleci.com/docs/environment-variables
@@ -37,4 +37,4 @@ deployment:
     branch: master
     owner: jumanjihouse
     commands:
-      - script/publish
+      - ci/publish
