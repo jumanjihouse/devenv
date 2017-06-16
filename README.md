@@ -145,6 +145,15 @@ Docker tags for state image:
 * pessimistic: `${hash-of-state/Dockerfile}`
 
 
+SSH Configuration Checks
+------------------------
+
+Tools to check ssh configuration:
+
+* https://sshcheck.com/
+* https://github.com/jumanjihouse/docker-ssh-scan
+
+
 License
 -------
 
