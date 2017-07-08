@@ -46,6 +46,7 @@ vim
 vimdiff
 wget
 which
+xz
 "
 
 pips="
