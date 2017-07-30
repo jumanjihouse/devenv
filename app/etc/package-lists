@@ -38,6 +38,8 @@ ncurses
 patch
 patchutils
 py2-pip
+ruby
+ruby-irb
 strace
 tar
 tree
