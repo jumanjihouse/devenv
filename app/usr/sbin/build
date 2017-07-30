@@ -31,20 +31,6 @@ pip install \
     && :
 
 (
-# Install the docker client.
-# Do this within a subshell for simplicity.
-# NOTE: This code only works for v1.11 and higher since docker was distributed
-#       as a single binary (not TGZ) up through v1.10.3.
-cd /tmp
-curl -sSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz
-tar xvzf docker-${DOCKER_VERSION}.tgz
-cp docker/docker /usr/bin/docker
-chmod 0755 /usr/bin/docker
-rm -fr docker/
-rm -f docker-${DOCKER_VERSION}.tgz
-)
-
-(
 # Install Bash Automated Test System.
 BATS_VER=0.4.0
 cd /tmp

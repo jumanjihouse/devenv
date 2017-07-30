@@ -10,7 +10,7 @@ export TAG=\${BUILD_DATE}-git-\${GIT_REF}
 export CI_BUILD_URL=${CIRCLE_BUILD_URL}
 
 # Which version of Docker do we install in the image?
-export DOCKER_VERSION=1.12.6
+export DOCKER_VERSION=17.05.0-r0
 EOF
 
 . ci/vars
