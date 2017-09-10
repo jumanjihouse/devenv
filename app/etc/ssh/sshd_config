@@ -250,7 +250,8 @@ Banner /etc/issue
 
 
 # override default of no subsystems
-Subsystem sftp  /usr/lib/ssh/sftp-server
+# https://en.wikibooks.org/wiki/OpenSSH/Server#The_SFTP_Server_Subsystem
+Subsystem sftp internal-sftp -e
 
 
 
