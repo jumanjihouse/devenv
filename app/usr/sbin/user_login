@@ -1,0 +1,32 @@
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+# These files are mounted into the runtime container by systemd.
+. /etc/devenv/global.conf
+. /etc/devenv/user.conf
+
+readonly duo="${DUO:-true}"
+readonly allowed_countries="${ALLOWED_COUNTRIES:-.*}"
+
+client_ip=${SSH_CLIENT%% *}
+readonly client_ip
+
+client_country="$(geoiplookup "${client_ip}" | awk -F ": " '{ print $2 }' | awk -F "," '{ print $1 }' | head -n 1)"
+readonly client_country
+
+allow=false
+if [[ "${client_country}" =~ ${allowed_countries} ]]; then
+  allow=true
+fi
+readonly allow
+
+if [[ "${allow}" == false ]]; then
+  exit 1
+fi
+
+if [[ "${duo}" == true ]]; then
+  exec /usr/sbin/login_duo -c "/etc/duo/${DUO_USERNAME}.conf" -f "${DUO_USERNAME}"
+else
+  exec /bin/bash -l
+fi

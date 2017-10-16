@@ -6,6 +6,7 @@ curl
 docker=${DOCKER_VERSION}
 duo_unix
 findutils
+geoip
 gnupg
 libressl
 man
