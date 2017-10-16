@@ -28,6 +28,9 @@ apk add --no-cache \
     ${convenience} \
     && :
 
+# Download and install data for geoip.
+/etc/periodic/monthly/geoip
+
 # shellcheck disable=SC2086,SC2154
 pip install \
     ${pips} \

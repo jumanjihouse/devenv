@@ -59,8 +59,5 @@ if [ -n "${IKEY}" ] && [ -n "${SKEY}" ] && [ -n "${HOST}" ] && [ -n "${DUO_USERN
   # /etc/duo/login_duo.conf must be readable only by user 'user'
   chown user:user "${target_config}"
   chmod 0400 "${target_config}"
-
-  exec /usr/sbin/sshd -D -e -o ForceCommand="/usr/sbin/login_duo -c /etc/duo/${DUO_USERNAME}.conf -f ${DUO_USERNAME}"
-else
-  exec /usr/sbin/sshd -D -e
 fi
+exec /usr/sbin/sshd -D -e -o ForceCommand="/usr/sbin/user_login"
