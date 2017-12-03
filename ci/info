@@ -1,7 +1,12 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -eEu
+set -o pipefail
 
-. ci/functions
+################################################################################
+# Show helpful information. Invoke as "ci/info".
+################################################################################
+
+. ci/functions.sh
 
 smitty docker version
 smitty docker info

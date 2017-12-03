@@ -1,2 +1,13 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+################################################################################
+# Run the test harness. Invoke as "ci/test".
+################################################################################
+
+. ci/functions.sh
+
+echo
+echo 'Check files for shell style, binaries, and whitespace.'
+ci/check-files -d

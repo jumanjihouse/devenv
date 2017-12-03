@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -eEu
+set -o pipefail
 
-URL=https://api.github.com/users/${GITHUB_HANDLE}/keys
-/usr/bin/curl --max-time 15 -sS -L ${URL} | /usr/bin/jq -r '.[].key'
+URL="https://api.github.com/users/${GITHUB_HANDLE}/keys"
+/usr/bin/curl --max-time 15 -sS -L "${URL}" | /usr/bin/jq -r '.[].key'
 :

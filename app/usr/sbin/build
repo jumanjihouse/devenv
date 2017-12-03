@@ -1,6 +1,7 @@
 #!/bin/sh
 set -x
-set -e
+set -eu
+set -o pipefail
 #
 # Docker build calls this script to harden the image during build.
 #
@@ -13,10 +14,11 @@ set -e
 #        setting the --logfile and --logpriority options.
 
 
-source /etc/package-lists
+. /etc/package-lists
 
 apk upgrade --no-cache --available
 
+# shellcheck disable=SC2086,SC2154
 apk add --no-cache \
     -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
     -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
@@ -26,6 +28,7 @@ apk add --no-cache \
     ${convenience} \
     && :
 
+# shellcheck disable=SC2086,SC2154
 pip install \
     ${pips} \
     && :
@@ -62,7 +65,8 @@ chown root:root /usr/bin/github_pubkeys
 chmod 0555 /usr/bin/github_pubkeys
 
 # Be informative after successful login.
-echo -e "\n\nApp container image built on $(date).\n\n" > /etc/motd
+# shellcheck disable=SC2039
+echo -e "\\n\\nApp container image built on $(date).\\n\\n" > /etc/motd
 
 # Improve strength of diffie-hellman-group-exchange-sha256 (Custom DH with SHA2).
 # See https://stribika.github.io/2015/01/04/secure-secure-shell.html
@@ -72,7 +76,7 @@ echo -e "\n\nApp container image built on $(date).\n\n" > /etc/motd
 #
 # This file is provided by the openssh package on Fedora.
 moduli=/etc/ssh/moduli
-if [[ -f ${moduli} ]]; then
+if [ -f ${moduli} ]; then
   cp ${moduli} ${moduli}.orig
   awk '$5 >= 2000' ${moduli}.orig > ${moduli}
   rm -f ${moduli}.orig
@@ -100,14 +104,17 @@ sysdirs="
 "
 
 # Ensure system dirs are owned by root and not writable by anybody else.
+# shellcheck disable=SC2086
 find $sysdirs -xdev -type d \
   -exec chown root:root {} \; \
   -exec chmod 0755 {} \;
 
 # Remove all suid files.
+# shellcheck disable=SC2086
 find $sysdirs -xdev -type f -a -perm /4000 -delete
 
 # Remove other programs that could be dangerous.
+# shellcheck disable=SC2086
 find $sysdirs -xdev \( \
   -name su \
   \) -delete
@@ -120,6 +127,7 @@ rm -fr /lib/rc
 rm -fr /root
 
 # Remove broken symlinks (because we removed the targets above).
+# shellcheck disable=SC2086
 find $sysdirs -xdev -type l -exec test ! -e {} \; -delete
 
 # Update databases.
