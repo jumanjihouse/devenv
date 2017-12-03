@@ -44,7 +44,7 @@ rm -fr /tmp/bats*
 )
 
 # Install go server spec.
-GOSS_VER=0.3.2
+GOSS_VER=0.3.5
 curl -sSL -o /usr/bin/goss https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VER}/goss-linux-amd64
 chmod 0755 /usr/bin/goss
 
