@@ -11,3 +11,7 @@ set -o pipefail
 echo
 echo 'Check files for shell style, binaries, and whitespace.'
 ci/check-files -d
+
+echo
+echo 'Check functionality of the hc command.'
+app/usr/bin/hc -b fixtures/hc/ -t build -t runtime -r5 -c20
