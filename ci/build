@@ -15,7 +15,7 @@ declare -rx TAG=\${BUILD_DATE}-git-\${GIT_REF}
 declare -rx CI_BUILD_URL="${CIRCLE_BUILD_URL:-unknown}"
 
 # Which version of Docker do we install in the image?
-declare -rx DOCKER_VERSION=17.07.0-r0
+declare -rx DOCKER_VERSION=17.10.0-r0
 EOF
 
 . ci/functions.sh
