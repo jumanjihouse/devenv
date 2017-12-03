@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+################################################################################
+# Clean up previous test runs. Invoke as "ci/clean".
+################################################################################
+
+. ci/functions.sh
+
+docker rm -fv test-state test-app || :

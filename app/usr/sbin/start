@@ -22,8 +22,8 @@ for key_type in ed25519 rsa; do
   [ -s "${key_file}" ] || ssh-keygen -q -f "${key_file}" -N '' -t "${key_type}"
 done
 
+mkdir -p /home/user/.ssh/ || :
 if [ -n "${GITHUB_HANDLE}" ]; then
-  mkdir -p /home/user/.ssh/ || :
   (
     keyfile=/home/user/.ssh/authorized_keys
     IFS=$'\n'
@@ -46,7 +46,7 @@ chown -R user:user /home/user/.ssh/
 # Fix up permissions. This is really only needed on the first run,
 # but can be useful if user messes up their permissions.
 chmod 0700 /home/user/.ssh/
-chmod 0600 /home/user/.ssh/*
+find /home/user/.ssh -type f -exec chmod 0600 {} +
 
 if [ -n "${IKEY}" ] && [ -n "${SKEY}" ] && [ -n "${HOST}" ] && [ -n "${DUO_USERNAME}" ]; then
   target_config="/etc/duo/${DUO_USERNAME}.conf"

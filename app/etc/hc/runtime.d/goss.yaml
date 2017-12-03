@@ -1,0 +1,6 @@
+command:
+  sshd -T -f /etc/ssh/sshd_config:
+    exit-status: 0
+process:
+  sshd:
+    running: true

@@ -4,6 +4,13 @@ EXPOSE 2222
 ENV LANG C
 ENTRYPOINT ["/usr/sbin/start"]
 
+HEALTHCHECK                                                                    \
+  --interval=30s                                                               \
+  --timeout=5s                                                                 \
+  --start-period=5s                                                            \
+  --retries=1                                                                  \
+  CMD /usr/bin/hc -t runtime
+
 # This is needed during the build script.
 ARG DOCKER_VERSION
 
