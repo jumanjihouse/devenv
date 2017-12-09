@@ -3,10 +3,9 @@ set -eEu
 set -o pipefail
 
 ################################################################################
-# Show helpful information. Invoke as "ci/info".
+# Clean up previous test runs. Invoke as "ci/clean".
 ################################################################################
 
 . ci/functions.sh
 
-smitty docker version
-smitty docker info
+docker rm -fv test-state test-app || :

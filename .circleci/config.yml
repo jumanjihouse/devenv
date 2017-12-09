@@ -1,9 +1,11 @@
+---
 # https://circleci.com/docs/docker
 version: 2
 jobs:
   build:
     docker:
-      - image: jumanjiman/cci:20170530T0443-git-02c4a0c
+      # https://github.com/jumanjihouse/cci/pulls?q=is%3Apr+is%3Aclosed
+      - image: jumanjiman/cci:20171209T1421-git-b9a1dce
 
     working_directory: ~/workdir/
 
@@ -25,6 +27,7 @@ jobs:
 
       - deploy:
           name: Deploy from master branch
+          # yamllint disable rule:line-length
           command: |
             if [[ ${CIRCLE_BRANCH} = master ]] && [[ -z ${CIRCLE_PR_NUMBER} ]]; then
               ci/publish

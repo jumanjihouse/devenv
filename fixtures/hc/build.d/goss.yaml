@@ -1,0 +1,6 @@
+---
+file:
+  /etc/passwd:
+    exists: true
+    filetype: file
+    contains: []

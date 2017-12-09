@@ -1,25 +1,35 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -eEu
+set -o pipefail
 
-. ci/functions
+################################################################################
+# Publish images to docker hub. Invoke as "ci/publish".
+################################################################################
 
-docker login -u ${user} -p ${pass}
+. ci/functions.sh
+
+# shellcheck disable=SC2154
+docker login -u "${user}" -p "${pass}"
 
 if [ -e /dev/shm/publish_state ]; then
   # Latest git ref for "state/Dockerfile".
-  STATE_GIT_REF=$(git rev-list --abbrev-commit --max-count 1 HEAD -- state/Dockerfile)
+  STATE_GIT_REF="$(git rev-list --abbrev-commit --max-count 1 HEAD -- state/Dockerfile)"
 
-  docker push jumanjiman/state:${STATE_GIT_REF}
+  docker push jumanjiman/state:"${STATE_GIT_REF}"
 fi
 
 for image in $(docker images | awk '/jumanjiman\/devenv/ {print $1":"$2 }'); do
-  docker push ${image}
+  docker push "${image}"
 done
 
 docker logout
 
 # Update microbadger metadata for state image.
+echo -n 'INFO: ask microbadger to update metadata for state image'
 curl -sS -X POST 'https://hooks.microbadger.com/images/jumanjiman/state/K9GX-acN8HGx2rbyQrmn2hI6SQ4='
+echo
 
 # Update microbadger metadata for app image.
+echo -n 'INFO: ask microbadger to update metadata for devenv image'
 curl -sS -X POST 'https://hooks.microbadger.com/images/jumanjiman/devenv/NPIdqj5J8GhG6vW5H_0RzDAXT_w='
+echo

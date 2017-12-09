@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 name="$(git config --global user.name)"
 mail="$(git config --global user.email)"
 

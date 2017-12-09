@@ -1,0 +1,190 @@
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+################################################################################
+# Run health checks.
+################################################################################
+
+usage() {
+  cat <<EOF
+  Usage: $0 [options]
+
+  Options:
+    -b BASE_DIR      base directory for test files
+    -c CONCURRENCY   how many tests to run in parallel
+    -d               debug, shorthand for -v2
+    -f FORMAT        output format
+    -h               help (this screen)
+    -r RETRY_TIMEOUT retry on failure so long as elapsed + sleep time is less than this
+    -s SLEEP         sleep this many seconds between retries
+    -t TEST_TYPE     type of tests to run
+    -v VERBOSITY     VERBOSITY is 0, 1, or 2
+EOF
+}
+
+main() {
+  show_environment
+  run_checks
+}
+
+show_environment() {
+  if [[ ${VERBOSITY} -ge 2 ]]; then
+    debug "BASE_DIR: \"${BASE_DIR}\""
+    debug "TEST_TYPES: \"${TEST_TYPES[*]}\""
+    debug "$(command -v goss)"
+    debug "$(goss --version)"
+  fi
+}
+
+run_checks() {
+  declare test_type
+  declare -i RC=0
+
+  for test_type in ${TEST_TYPES[*]}; do
+    info "${test_type}"
+    TEST_TYPE=${test_type} goss -g "${BASE_DIR}/hc.yaml" validate || RC=1
+  done
+
+  return ${RC}
+}
+
+################################################################################
+# Helper functions.
+################################################################################
+
+err() {
+  echo ERROR: "$*" >&2
+}
+
+info() {
+  if [[ ${VERBOSITY} -ge 1 ]]; then
+    echo INFO: "$*" >&2
+  fi
+}
+
+warn() {
+  if [[ ${VERBOSITY} -ge 1 ]]; then
+    echo WARN: "$*" >&2
+  fi
+}
+
+debug() {
+  if [[ ${VERBOSITY} -ge 2 ]]; then
+    echo DEBUG: "$*" >&2
+  fi
+}
+
+finish() {
+  declare -ri RC=$?
+
+  if [ ${RC} -eq 0 ]; then
+    info "$0" OK
+  else
+    err "$0" failed with exit code ${RC}
+    exit ${RC}
+  fi
+}
+
+handle_err() {
+  declare -ri RC=$?
+
+  # $BASH_COMMAND contains the command that was being executed at the time of the trap
+  # ${BASH_LINENO[0]} contains the line number in the script of that command
+  err "exit code ${RC} from \"${BASH_COMMAND}\" on line ${BASH_LINENO[0]}"
+
+  exit ${RC}
+}
+
+################################################################################
+# Program execution starts here.
+################################################################################
+
+# Traps.
+# NOTE: In POSIX, beside signals, only EXIT is valid as an event.
+#       You must use bash to use ERR.
+trap finish     EXIT
+trap handle_err ERR
+
+# Default values.
+declare     BASE_DIR=/etc/hc/
+declare -i  CONCURRENCY=10
+declare     FORMAT=""
+declare -i  RETRY_TIMEOUT=0
+declare -i  SLEEP=1
+declare -a  TEST_TYPES=()
+declare -i  VERBOSITY=${VERBOSITY:-1}
+
+# http://wiki.bash-hackers.org/howto/getopts_tutorial
+while getopts ":b:c:df:hr:s:t:v:" opt; do
+  case ${opt} in
+    b)
+      BASE_DIR="${OPTARG}"
+      if ! [[ ${BASE_DIR} =~ ^/ ]]; then
+        # Turn BASE_DIR into an absolute path.
+        BASE_DIR="${PWD}/${BASE_DIR}"
+      fi
+      ;;
+    c)
+      CONCURRENCY=${OPTARG}
+      ;;
+    d)
+      VERBOSITY=2
+      ;;
+    f)
+      FORMAT=${OPTARG}
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    r)
+      RETRY_TIMEOUT=${OPTARG}
+      ;;
+    s)
+      SLEEP=${OPTARG}
+      ;;
+    t)
+      TEST_TYPES+=("${OPTARG}")
+      ;;
+    v)
+      VERBOSITY=${OPTARG}
+      ;;
+    :)
+      usage
+      err option -"${OPTARG}" requires an argument
+      exit 1
+      ;;
+    \?|*)
+      usage
+      err invalid option -"${OPTARG}"
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "${FORMAT}" ]]; then
+  # Provide reasonable defaults.
+  case ${VERBOSITY} in
+    0)   FORMAT=silent;;
+    1)   FORMAT=nagios;;
+    2|*) FORMAT=documentation;;
+  esac
+fi
+
+declare -rx  BASE_DIR
+declare -rxi GOSS_MAX_CONCURRENT=${CONCURRENCY}
+declare -rx  GOSS_FMT=${FORMAT}
+declare -rx  GOSS_RETRY_TIMEOUT=${RETRY_TIMEOUT}s
+declare -rx  GOSS_SLEEP=${SLEEP}s
+declare -r   VERBOSITY
+
+if [[ ${#TEST_TYPES[@]} -eq 0 ]]; then
+  TEST_TYPES+=('runtime')
+fi
+declare -r TEST_TYPES
+
+# After the shift, $* contains non-option arguments.
+shift $((OPTIND-1))
+
+main

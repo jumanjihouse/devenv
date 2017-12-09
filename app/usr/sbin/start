@@ -1,5 +1,6 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -eEu
+set -o pipefail
 set -x
 
 # Env vars from systemd:
@@ -7,30 +8,34 @@ set -x
 # - DUO_USERNAME
 # - IKEY
 # - SKEY
+GITHUB_HANDLE="${GITHUB_HANDLE:-}"
+DUO_USERNAME="${DUO_USERNAME:-}"
+IKEY="${IKEY:-}"
+SKEY="${SKEY:-}"
 
 # Create host keys if necessary.
 # These exist in user data volume, so they persist across rebuilds.
 # sshd_config specifies to use these files.
 mkdir -p /media/state/etc/ssh/ || :
 for key_type in ed25519 rsa; do
-  key_file=/media/state/etc/ssh/ssh_host_${key_type}_key
-  [ -s ${key_file} ] || ssh-keygen -q -f ${key_file} -N '' -t ${key_type}
+  key_file="/media/state/etc/ssh/ssh_host_${key_type}_key"
+  [ -s "${key_file}" ] || ssh-keygen -q -f "${key_file}" -N '' -t "${key_type}"
 done
 
+mkdir -p /home/user/.ssh/ || :
 if [ -n "${GITHUB_HANDLE}" ]; then
-  mkdir -p /home/user/.ssh/ || :
   (
     keyfile=/home/user/.ssh/authorized_keys
     IFS=$'\n'
     for key in $(/usr/bin/github_pubkeys); do
-      grep "${key}" ${keyfile} &> /dev/null || echo ${key} >> ${keyfile}
+      grep "${key}" ${keyfile} &> /dev/null || echo "${key}" >> "${keyfile}"
     done
   )
 fi
 
 for file in .bashrc .bash_profile .bash_logout; do
-  if [ ! -e /home/user/${file} ]; then
-    cp -f /etc/skel/${file} /home/user/${file}
+  if [ ! -e "/home/user/${file}" ]; then
+    cp -f "/etc/skel/${file}" "/home/user/${file}"
   fi
 done
 
@@ -41,19 +46,19 @@ chown -R user:user /home/user/.ssh/
 # Fix up permissions. This is really only needed on the first run,
 # but can be useful if user messes up their permissions.
 chmod 0700 /home/user/.ssh/
-chmod 0600 /home/user/.ssh/*
+find /home/user/.ssh -type f -exec chmod 0600 {} +
 
-if [ -n "${IKEY}" -a -n "${SKEY}" -a -n "${HOST}" -a -n "${DUO_USERNAME}" ]; then
+if [ -n "${IKEY}" ] && [ -n "${SKEY}" ] && [ -n "${HOST}" ] && [ -n "${DUO_USERNAME}" ]; then
   target_config="/etc/duo/${DUO_USERNAME}.conf"
 
-  cp /etc/duo/login_duo.conf ${target_config}
-  sed -i "s/^ikey.*/ikey = ${IKEY}/g" ${target_config}
-  sed -i "s/^skey.*/skey = ${SKEY}/g" ${target_config}
-  sed -i "s/^host.*/host = ${HOST}/g" ${target_config}
+  cp /etc/duo/login_duo.conf "${target_config}"
+  sed -i "s/^ikey.*/ikey = ${IKEY}/g" "${target_config}"
+  sed -i "s/^skey.*/skey = ${SKEY}/g" "${target_config}"
+  sed -i "s/^host.*/host = ${HOST}/g" "${target_config}"
 
   # /etc/duo/login_duo.conf must be readable only by user 'user'
-  chown user:user ${target_config}
-  chmod 0400 ${target_config}
+  chown user:user "${target_config}"
+  chmod 0400 "${target_config}"
 
   exec /usr/sbin/sshd -D -e -o ForceCommand="/usr/sbin/login_duo -c /etc/duo/${DUO_USERNAME}.conf -f ${DUO_USERNAME}"
 else

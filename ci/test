@@ -1,2 +1,35 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+################################################################################
+# Run the test harness. Invoke as "ci/test".
+################################################################################
+
+. ci/functions.sh
+
+echo
+echo 'Clean up from previous runs.'
+ci/clean
+
+echo
+echo 'Check files for shell style, binaries, and whitespace.'
+ci/check-files -d
+
+echo
+echo 'Check functionality of the hc command.'
+app/usr/bin/hc -b fixtures/hc/ -t build -t runtime -r5 -c20
+
+echo
+echo 'Run static build tests.'
+docker run --rm -it --entrypoint=hc jumanjiman/devenv -t build
+
+echo
+echo 'Run runtime tests.'
+docker create --name test-state jumanjiman/state true
+docker run -d --volumes-from test-state --name=test-app jumanjiman/devenv
+docker exec -it test-app hc -t runtime -r5 -f silent
+
+echo
+echo 'Clean up.'
+ci/clean

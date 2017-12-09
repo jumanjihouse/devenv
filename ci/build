@@ -1,29 +1,35 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+################################################################################
+# Build the images. Invoke as "ci/build".
+################################################################################
 
 cat > ci/vars <<EOF
 # This file (ci/vars) is automatically created by ci/build and
 # is never checked into version control.
-export BUILD_DATE=$(date +%Y%m%dT%H%M)
-export GIT_REF=$(git rev-parse --short HEAD)
-export TAG=\${BUILD_DATE}-git-\${GIT_REF}
-export CI_BUILD_URL=${CIRCLE_BUILD_URL}
+declare -rx BUILD_DATE="$(date +%Y%m%dT%H%M)"
+declare -rx GIT_REF="$(git rev-parse --short HEAD)"
+declare -rx TAG=\${BUILD_DATE}-git-\${GIT_REF}
+declare -rx CI_BUILD_URL="${CIRCLE_BUILD_URL:-unknown}"
 
 # Which version of Docker do we install in the image?
-export DOCKER_VERSION=17.07.0-r0
+declare -rx DOCKER_VERSION=17.10.0-r0
 EOF
 
+. ci/functions.sh
 . ci/vars
 
 docker build \
   --rm \
-  --build-arg DOCKER_VERSION=${DOCKER_VERSION} \
-  --build-arg GIT_REF=${GIT_REF} \
-  --build-arg VERSION=${TAG} \
+  --build-arg DOCKER_VERSION="${DOCKER_VERSION}" \
+  --build-arg GIT_REF="${GIT_REF}" \
+  --build-arg VERSION="${TAG}" \
   -t jumanjiman/devenv \
   app/
 
-docker tag jumanjiman/devenv jumanjiman/devenv:${TAG}
+docker tag jumanjiman/devenv jumanjiman/devenv:"${TAG}"
 
 # We only want to update the state image when it truly changes.
 CACHED_REF=""
@@ -41,16 +47,16 @@ STATE_GIT_REF=$(git rev-list --abbrev-commit --max-count 1 HEAD -- state/Dockerf
 if [ "x${CACHED_REF}" != "x${STATE_GIT_REF}" ]; then
   docker build \
     --rm=false \
-    --build-arg GIT_REF=${STATE_GIT_REF} \
+    --build-arg GIT_REF="${STATE_GIT_REF}" \
     -t jumanjiman/state \
     state/
 
-  docker tag jumanjiman/state jumanjiman/state:${STATE_GIT_REF}
+  docker tag jumanjiman/state jumanjiman/state:"${STATE_GIT_REF}"
   touch /dev/shm/publish_state
 
   if [ -d ~/deps ]; then
     rm -f ~/deps/state.tar || :
-    docker save -o ~/deps/state.tar jumanjiman/state jumanjiman/state:${STATE_GIT_REF}
+    docker save -o ~/deps/state.tar jumanjiman/state jumanjiman/state:"${STATE_GIT_REF}"
   fi
 fi
 

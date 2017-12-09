@@ -1,0 +1,4 @@
+---
+command:
+  ps:
+    exit-status: 0

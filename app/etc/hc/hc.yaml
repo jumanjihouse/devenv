@@ -1,0 +1,7 @@
+---
+# File paths to be included can be absolute or relative.
+# If relative, the path must be relative to this goss file.
+# To cover all scenarios,
+# the `hc' wrapper converts BASE_DIR to an absolute path.
+gossfile:
+  '{{.Env.BASE_DIR}}/{{.Env.TEST_TYPE}}.d/*.yaml': {}
