@@ -16,3 +16,8 @@ repos:
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: detect-private-key
+
+  - repo: https://github.com/detailyang/pre-commit-shell
+    sha: 1.0.2
+    hooks:
+      - id: shell-lint

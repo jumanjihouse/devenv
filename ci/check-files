@@ -6,7 +6,6 @@ set -o pipefail
 # Check files in a git repo.
 #
 # Binaries are allowed in an "assets" directory and nowhere else.
-# Shell scripts must conform to shellcheck.
 # Trailing whitespace is not allowed.
 ################################################################################
 
@@ -32,7 +31,6 @@ main() {
       continue # A git submodule appears as a directory in "git ls-files".
     fi
     check_binary     "${file}" || RC=1
-    check_shell      "${file}" || RC=1
   done < <(git ls-files -z)
 
   check_whitespace || RC=1
@@ -79,19 +77,6 @@ is_directory() {
   file --mime --dereference "${file}" | grep 'directory' &> /dev/null
 }
 
-is_shell_script() {
-  declare -r file="$1"
-  declare -i RC=1
-
-  if file --mime --dereference "${file}" | grep 'shellscript' &> /dev/null; then
-    RC=0
-  elif [[ "${file}" =~ \.sh$ ]]; then
-    RC=0
-  fi
-
-  return ${RC}
-}
-
 check_binary() {
   declare -r file="$1"
   declare -i RC=0
@@ -101,26 +86,6 @@ check_binary() {
   elif is_binary "${file}"; then
     err \""${file}"\" is a binary file
     RC=1
-  fi
-
-  return ${RC}
-}
-
-check_shell() {
-  declare -r file="$1"
-  declare -i RC=0
-
-  if ! is_shell_script "${file}"; then
-    return 0
-  fi
-
-  bash -n "${file}" || RC=1
-
-  if command -v shellcheck &> /dev/null; then
-    # https://github.com/koalaman/shellcheck
-    shellcheck -x "${file}" || RC=1
-  else
-    warn unable to find \"shellcheck\" in \$PATH ... skipping shellcheck checks
   fi
 
   return ${RC}
