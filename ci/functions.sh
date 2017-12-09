@@ -7,10 +7,16 @@
 # Defaults.
 declare -i VERBOSITY=${VERBOSITY:-1}
 
+# pre-commit gets installed in ~/.local/bin
+if ! [[ "${PATH}" =~ ${HOME}/.local/bin ]]; then
+  export PATH="${PATH}:${HOME}/.local/bin"
+fi
+
 smitty() {
-  echo; echo
+  echo
   echo "SMITTY: $*"
   "$@"
+  echo
 }
 
 err() {

@@ -1,3 +1,4 @@
+---
 command:
   timeout -k5 -s9 2 bash -c 'cat <(ls /etc)':
     title: bash should not hang
@@ -21,14 +22,14 @@ package:
   docker:
     installed: true
     versions:
-    - 17.10.0-r0
+      - 17.10.0-r0
 user:
   root:
     exists: true
     uid: 0
     gid: 0
     groups:
-    - root
+      - root
     home: /root
     shell: /sbin/nologin
   sshd:
@@ -36,7 +37,7 @@ user:
     uid: 22
     gid: 22
     groups:
-    - sshd
+      - sshd
     home: /dev/null
     shell: /sbin/nologin
   user:
@@ -44,7 +45,7 @@ user:
     uid: 1000
     gid: 1000
     groups:
-    - user
+      - user
     home: /home/user
     shell: /bin/bash
 group:

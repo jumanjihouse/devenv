@@ -1,0 +1,18 @@
+---
+
+fail_fast: false
+
+repos:
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    sha: v1.10.0
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: v1.1.1
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: detect-private-key
