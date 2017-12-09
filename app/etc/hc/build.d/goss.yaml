@@ -1,3 +1,13 @@
+command:
+  timeout -k5 -s9 2 bash -c 'cat <(ls /etc)':
+    title: bash should not hang
+    meta:
+      desc: https://github.com/gliderlabs/docker-alpine/issues/363
+      sev: 1
+    exit-status: 0
+    stdout:
+      - sysctl.conf
+
 file:
   /etc/passwd:
     exists: true
