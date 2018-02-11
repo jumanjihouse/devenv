@@ -29,7 +29,7 @@ Host *
     HostbasedAuthentication no
     IdentityFile ~/.ssh/id_rsa
     KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
-    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
     Port 22
     Protocol 2
     SendEnv LANG
@@ -48,4 +48,5 @@ Host *
     SendEnv LC_TELEPHONE
     SendEnv LC_TIME
     SendEnv XMODIFIERS
-    StrictHostKeyChecking ask
+    # Automatically accept hitherto-unseen keys but will refuse connections for changed or invalid hostkeys.
+    StrictHostKeyChecking accept-new
