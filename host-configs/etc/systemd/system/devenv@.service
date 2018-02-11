@@ -25,6 +25,7 @@ ExecStart=/usr/bin/docker run \
   --name         %i \
   --volumes-from %i-data \
   --volume       /etc/devenv/login_duo.conf:/etc/duo/login_duo.conf:ro \
+  --volume       /etc/devenv/%i.conf:/etc/devenv/user.conf:ro \
   --tmpfs        /etc/duo/:rw,noexec,nosuid,size=64K \
   --tmpfs        /run/:rw,noexec,nosuid,size=64K \
   --tmpfs        /tmp/:rw,noexec,nosuid,size=32M \

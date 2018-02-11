@@ -141,6 +141,9 @@ AuthorizedKeysFile .ssh/authorized_keys
 
 
 
+# If the AuthorizedKeysCommand does not successfully authorize the user,
+# authorization falls through to the AuthorizedKeysFile.
+#
 # Caution: Do not run sshd in debug mode or else
 # this won't work as you expect.
 AuthorizedKeysCommand /usr/bin/github_pubkeys
