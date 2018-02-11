@@ -71,6 +71,33 @@ HostKey /media/state/etc/ssh/ssh_host_rsa_key
 HostKey /media/state/etc/ssh/ssh_host_ed25519_key
 
 
+# Specifies the maximum amount of data that
+# may be transmitted before the session key is renegotiated, optionally
+# followed a maximum amount of time that may pass before the session key is renegotiated.
+#
+# The first argument is specified in bytes and may have a suffix of 'K', 'M', or 'G'
+# to indicate Kilobytes, Megabytes, or Gigabytes, respectively.
+# The default is between '1G' and '4G', depending on the cipher.
+#
+# The optional second value is specified in seconds and
+# may use any of the units documented in the TIME FORMATS section.
+# The default value for RekeyLimit is "default none", which means that
+# rekeying is performed after the cipher’s default amount of data has been sent or received and
+# no time based rekeying is done.
+#
+# NOTE: rekeylimit currently requires a workaround for upstream sshd (< v7.6).
+#   ClientAliveInterval
+#   ClientAliveCountMax must not be zero
+# https://bugzilla.mindrot.org/show_bug.cgi?id=2757
+# https://bugzilla.redhat.com/show_bug.cgi?id=1480510
+#
+# WARNING: If an ssh client does not implement session rekeying, the
+# client connection will die when it receives the rekeying message.
+#
+# Our setting: 256 MiB or 1 hour
+ReKeyLimit 256M 1H
+
+
 
 # CCE-4325-7 Disable SSH protocol version 1
 # NIST 800-53 mapping: CM-7
@@ -101,9 +128,9 @@ PrintMotd yes
 
 
 # Authentication:
-#LoginGraceTime 2m
+LoginGraceTime 30s
+MaxAuthTries 3
 #StrictModes yes
-#MaxAuthTries 6
 #MaxSessions 10
 #RSAAuthentication yes
 #PubkeyAuthentication yes
@@ -114,6 +141,9 @@ AuthorizedKeysFile .ssh/authorized_keys
 
 
 
+# If the AuthorizedKeysCommand does not successfully authorize the user,
+# authorization falls through to the AuthorizedKeysFile.
+#
 # Caution: Do not run sshd in debug mode or else
 # this won't work as you expect.
 AuthorizedKeysCommand /usr/bin/github_pubkeys
@@ -207,7 +237,7 @@ AllowAgentForwarding yes
 #
 # Recommended by CCE: 900
 #
-ClientAliveInterval 900
+ClientAliveInterval 300
 
 
 
@@ -227,7 +257,7 @@ ClientAliveInterval 900
 #
 # Recommended by CCE: 0
 #
-ClientAliveCountMax 0
+ClientAliveCountMax 3
 
 
 
@@ -250,7 +280,8 @@ Banner /etc/issue
 
 
 # override default of no subsystems
-Subsystem sftp  /usr/libexec/openssh/sftp-server
+# https://en.wikibooks.org/wiki/OpenSSH/Server#The_SFTP_Server_Subsystem
+Subsystem sftp internal-sftp -e
 
 
 

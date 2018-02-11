@@ -10,7 +10,7 @@ repos:
       - id: yamllint
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    sha: v1.1.1
+    sha: v1.2.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -25,4 +25,5 @@ repos:
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     sha: v1.1.4
     hooks:
+      - id: forbid-crlf
       - id: forbid-tabs
