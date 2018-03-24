@@ -29,6 +29,7 @@ file
 git
 git-bash-completion
 git-perl
+git-subtree
 git-svn
 go
 go-tools
@@ -40,7 +41,11 @@ patch
 patchutils
 py2-pip
 ruby
+ruby-bundler
+ruby-dev
+ruby-etc
 ruby-irb
+ruby-json
 strace
 tar
 tree

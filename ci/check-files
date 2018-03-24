@@ -6,7 +6,6 @@ set -o pipefail
 # Check files in a git repo.
 #
 # Binaries are allowed in an "assets" directory and nowhere else.
-# Trailing whitespace is not allowed.
 ################################################################################
 
 usage() {
@@ -32,8 +31,6 @@ main() {
     fi
     check_binary     "${file}" || RC=1
   done < <(git ls-files -z)
-
-  check_whitespace || RC=1
 
   return ${RC}
 }
@@ -86,30 +83,6 @@ check_binary() {
   elif is_binary "${file}"; then
     err \""${file}"\" is a binary file
     RC=1
-  fi
-
-  return ${RC}
-}
-
-check_whitespace() {
-  local -i RC=1
-  local output
-  # This command identifies whitespace errors and leftover conflict markers.
-  # It works only on committed files, so we have to warn on dirty git tree.
-  output="$(git diff-tree --check "$(git hash-object -t tree /dev/null)" HEAD)"
-  readonly output
-
-  if [[ -z "${output}" ]]; then
-    RC=0
-    info whitespace OK
-  else
-    err Found whitespace errors. See below.
-    echo "${output}" >&2
-  fi
-
-  if is_git_dirty; then
-    warn 'Git repo has uncommitted changes; recommend to commit and re-run tests.'
-    git status
   fi
 
   return ${RC}
