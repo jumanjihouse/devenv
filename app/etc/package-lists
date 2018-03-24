@@ -41,7 +41,11 @@ patch
 patchutils
 py2-pip
 ruby
+ruby-bundler
+ruby-dev
+ruby-etc
 ruby-irb
+ruby-json
 strace
 tar
 tree
