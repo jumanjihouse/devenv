@@ -14,7 +14,7 @@ ci/clean
 
 echo
 echo 'Check files for shell style, binaries, and whitespace.'
-pre-commit run --all-files --verbose
+pre-commit run --all-files --verbose --show-diff-on-failure
 
 echo
 echo 'Check functionality of the hc command.'
