@@ -18,11 +18,11 @@ pre-commit run --all-files --verbose
 
 echo
 echo 'Check functionality of the hc command.'
-app/usr/bin/hc -b fixtures/hc/ -t build -t runtime -r5 -c20
+app/usr/bin/hc -b fixtures/hc/ -t build -t runtime -r5 -c20 -f documentation
 
 echo
 echo 'Run static build tests.'
-docker run --rm -it --entrypoint=hc jumanjiman/devenv -t build
+docker run --rm -it --entrypoint=hc jumanjiman/devenv -t build -f documentation
 
 echo
 echo 'Run runtime tests.'
