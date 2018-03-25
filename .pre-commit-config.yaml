@@ -12,12 +12,12 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/adrienverge/yamllint.git
-    sha: v1.10.0
+    sha: v1.11.0
     hooks:
       - id: yamllint
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    sha: v1.2.0
+    sha: v1.2.3
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -25,7 +25,7 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    sha: v1.1.4
+    sha: v1.1.5
     hooks:
       - id: forbid-crlf
       - id: forbid-tabs
