@@ -15,6 +15,11 @@ jobs:
       - checkout
 
       - run:
+          name: prepare the local dev environment
+          command: |
+            ci/bootstrap
+
+      - run:
           name: Build the image
           command: |
             ci/info

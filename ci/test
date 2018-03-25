@@ -6,7 +6,7 @@ set -o pipefail
 # Run the test harness. Invoke as "ci/test".
 ################################################################################
 
-. ci/functions.sh
+. ci/bootstrap
 
 echo
 echo 'Clean up from previous runs.'
@@ -14,7 +14,7 @@ ci/clean
 
 echo
 echo 'Check files for shell style, binaries, and whitespace.'
-ci/check-files -d
+pre-commit run --all-files --verbose
 
 echo
 echo 'Check functionality of the hc command.'

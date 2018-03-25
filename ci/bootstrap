@@ -17,6 +17,8 @@ EOF
 }
 
 main() {
+  setup_python_path
+
   if command -v pre-commit &> /dev/null; then
     info "pre-commit command is already installed"
   else
@@ -30,6 +32,15 @@ main() {
   smitty git gc --prune
 
   smitty git fetch --all --prune
+}
+
+setup_python_path() {
+  PYTHON_PATH="$(python -c "import site; print(site.USER_BASE)")"
+  readonly PYTHON_PATH
+
+  if ! grep "${PYTHON_PATH}/bin" <(printenv PATH) &> /dev/null; then
+    export PATH="${PATH}:${PYTHON_PATH}/bin"
+  fi
 }
 
 ################################################################################
