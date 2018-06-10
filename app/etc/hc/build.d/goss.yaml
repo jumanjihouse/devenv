@@ -22,7 +22,7 @@ package:
   docker:
     installed: true
     versions:
-      - 18.02.0-r0
+      - 18.03.1-r0
 user:
   root:
     exists: true
