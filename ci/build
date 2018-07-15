@@ -6,7 +6,7 @@ set -o pipefail
 # Build the images. Invoke as "ci/build".
 ################################################################################
 
-cat > ci/vars <<EOF
+cat >ci/vars <<EOF
 # This file (ci/vars) is automatically created by ci/build and
 # is never checked into version control.
 declare -rx BUILD_DATE="$(date +%Y%m%dT%H%M)"
@@ -22,7 +22,7 @@ EOF
 . ci/functions.sh
 . ci/vars
 
-docker build \
+run docker build \
   --rm \
   --build-arg DOCKER_VERSION="${DOCKER_VERSION}" \
   --build-arg GIT_REF="${GIT_REF}" \
@@ -30,35 +30,35 @@ docker build \
   -t jumanjiman/devenv \
   app/
 
-docker tag jumanjiman/devenv jumanjiman/devenv:"${TAG}"
+run docker tag jumanjiman/devenv jumanjiman/devenv:"${TAG}"
 
 # We only want to update the state image when it truly changes.
 CACHED_REF=""
 if [ -s ~/deps/state.tar ]; then
-  echo "=== load cache ==="
-  docker load -i ~/deps/state.tar
+  info "=== load cache ==="
+  run docker load -i ~/deps/state.tar
   CACHED_REF=$(docker inspect -f '{{ index .Config.Labels "org.label-schema.vcs-ref" }}' jumanjiman/state)
-  echo "state image after loading cache"
-  docker images | grep -e REPOSITORY -e state
+  info "state image after loading cache"
+  run docker images | grep -e REPOSITORY -e state
 fi
 
 # Latest git ref for "state/Dockerfile".
 STATE_GIT_REF=$(git rev-list --abbrev-commit --max-count 1 HEAD -- state/Dockerfile)
 
 if [ "x${CACHED_REF}" != "x${STATE_GIT_REF}" ]; then
-  docker build \
+  run docker build \
     --rm=false \
     --build-arg GIT_REF="${STATE_GIT_REF}" \
     -t jumanjiman/state \
     state/
 
-  docker tag jumanjiman/state jumanjiman/state:"${STATE_GIT_REF}"
-  touch /dev/shm/publish_state
+  run docker tag jumanjiman/state jumanjiman/state:"${STATE_GIT_REF}"
+  run touch /dev/shm/publish_state
 
   if [ -d ~/deps ]; then
     rm -f ~/deps/state.tar || :
-    docker save -o ~/deps/state.tar jumanjiman/state jumanjiman/state:"${STATE_GIT_REF}"
+    run docker save -o ~/deps/state.tar jumanjiman/state jumanjiman/state:"${STATE_GIT_REF}"
   fi
 fi
 
-docker images | grep -e REPOSITORY -e devenv -e state
+run docker images | grep -e REPOSITORY -e devenv -e state

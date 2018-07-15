@@ -8,4 +8,4 @@ set -o pipefail
 
 . ci/functions.sh
 
-docker rm -fv test-state test-app || :
+run docker rm -fv test-state test-app || :
