@@ -13,37 +13,36 @@ set -o pipefail
 #    lxc-start: Additional information can be obtained by \
 #        setting the --logfile and --logpriority options.
 
-
 . /etc/package-lists
 
 apk upgrade --no-cache --available
 
 # shellcheck disable=SC2086,SC2154
 apk add --no-cache \
-    -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    ${essentials} \
-    ${devtools} \
-    ${convenience} \
-    && :
+  -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
+  -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
+  -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+  ${essentials} \
+  ${devtools} \
+  ${convenience} &&
+  :
 
 # Download and install data for geoip.
 /etc/periodic/monthly/geoip
 
 # shellcheck disable=SC2086,SC2154
 pip install \
-    ${pips} \
-    && :
+  ${pips} &&
+  :
 
 (
-# Install Bash Automated Test System.
-BATS_VER=0.4.0
-cd /tmp
-curl -sSL -o bats_v${BATS_VER}.tar.gz https://github.com/sstephenson/bats/archive/v${BATS_VER}.tar.gz
-tar -xf /tmp/bats_v${BATS_VER}.tar.gz
-bats-${BATS_VER}/install.sh /usr/local
-rm -fr /tmp/bats*
+  # Install Bash Automated Test System.
+  BATS_VER=0.4.0
+  cd /tmp
+  curl -sSL -o bats_v${BATS_VER}.tar.gz https://github.com/sstephenson/bats/archive/v${BATS_VER}.tar.gz
+  tar -xf /tmp/bats_v${BATS_VER}.tar.gz
+  bats-${BATS_VER}/install.sh /usr/local
+  rm -fr /tmp/bats*
 )
 
 # Install go server spec.
@@ -53,7 +52,7 @@ chmod 0755 /usr/bin/goss
 
 # Get tmux-bash-completions.
 curl -L -o /usr/share/bash-completion/completions/tmux \
-https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/master/completions/tmux
+  https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/master/completions/tmux
 
 adduser -D -s /bin/bash -u 1000 user
 sed -i -r 's/^user:!:/user:x:/' /etc/shadow
@@ -69,7 +68,7 @@ chmod 0555 /usr/bin/github_pubkeys
 
 # Be informative after successful login.
 # shellcheck disable=SC2039
-echo -e "\\n\\nApp container image built on $(date).\\n\\n" > /etc/motd
+echo -e "\\n\\nApp container image built on $(date).\\n\\n" >/etc/motd
 
 # Improve strength of diffie-hellman-group-exchange-sha256 (Custom DH with SHA2).
 # See https://stribika.github.io/2015/01/04/secure-secure-shell.html
@@ -81,7 +80,7 @@ echo -e "\\n\\nApp container image built on $(date).\\n\\n" > /etc/motd
 moduli=/etc/ssh/moduli
 if [ -f ${moduli} ]; then
   cp ${moduli} ${moduli}.orig
-  awk '$5 >= 2000' ${moduli}.orig > ${moduli}
+  awk '$5 >= 2000' ${moduli}.orig >${moduli}
   rm -f ${moduli}.orig
 fi
 

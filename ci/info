@@ -8,5 +8,5 @@ set -o pipefail
 
 . ci/functions.sh
 
-smitty docker version
-smitty docker info
+run docker version
+run docker info

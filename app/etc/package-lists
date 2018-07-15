@@ -25,6 +25,7 @@ diffutils
 docker-bash-completion
 docker-vim
 editorconfig
+expect
 file
 git
 git-bash-completion

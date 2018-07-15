@@ -28,7 +28,7 @@ if [ -n "${GITHUB_HANDLE}" ]; then
     keyfile=/home/user/.ssh/authorized_keys
     IFS=$'\n'
     for key in $(/usr/bin/github_pubkeys); do
-      grep "${key}" ${keyfile} &> /dev/null || echo "${key}" >> "${keyfile}"
+      grep "${key}" ${keyfile} &>/dev/null || echo "${key}" >>"${keyfile}"
     done
   )
 fi
