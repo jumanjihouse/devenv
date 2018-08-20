@@ -19,8 +19,6 @@ main() {
     run pip install --user -Iv --compile --no-cache-dir pre-commit
   fi
 
-  pre-commit autoupdate
-
   # https://git-scm.com/docs/git-gc
   run git gc --prune
 
