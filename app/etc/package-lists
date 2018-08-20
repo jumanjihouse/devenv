@@ -67,5 +67,6 @@ convenience="
 cyrus-sasl
 cyrus-sasl-gssapi
 mutt
+rsync
 tmux
 "
