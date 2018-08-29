@@ -2,6 +2,9 @@
 [general]
 ignore=body-is-missing
 
+[body-max-line-length]
+line-length=120
+
 [title-max-length]
 line-length=72
 

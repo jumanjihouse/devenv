@@ -37,6 +37,7 @@ go-tools
 grep
 jq
 less
+lua-aports
 ncurses
 patch
 patchutils
