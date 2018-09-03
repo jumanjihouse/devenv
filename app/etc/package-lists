@@ -4,7 +4,7 @@ bash-completion
 coreutils
 curl
 docker=${DOCKER_VERSION}
-duo_unix
+duo_unix>=1.10.4-r0
 findutils
 geoip
 gnupg
@@ -12,7 +12,7 @@ libressl
 man
 man-pages
 mdocml-apropos
-openssh">=7.7p1-r2"
+openssh>=7.8_p1-r0
 openssh-client
 "
 
