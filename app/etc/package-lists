@@ -4,7 +4,7 @@ bash-completion
 coreutils
 curl
 docker=${DOCKER_VERSION}
-duo_unix>=1.10.4-r0
+duo_unix>=1.10.5-r0
 findutils
 geoip
 gnupg
@@ -33,7 +33,6 @@ git-perl
 git-subtree
 git-svn
 go
-go-tools
 grep
 jq
 less
@@ -53,11 +52,13 @@ tar
 tree
 util-linux
 util-linux-bash-completion
+unzip
 vim
 vimdiff
 wget
 which
 xz
+zip
 "
 
 pips="
