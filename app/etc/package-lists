@@ -4,7 +4,7 @@ bash-completion
 coreutils
 curl
 docker=${DOCKER_VERSION}
-duo_unix>=1.10.4-r0
+duo_unix>=1.10.5-r0
 findutils
 geoip
 gnupg
