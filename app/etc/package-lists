@@ -6,8 +6,8 @@ curl
 docker=${DOCKER_VERSION}
 duo_unix>=1.10.5-r0
 findutils
-geoip
 gnupg
+libmaxminddb
 libressl
 man
 man-pages
@@ -54,7 +54,6 @@ util-linux
 util-linux-bash-completion
 unzip
 vim
-vimdiff
 wget
 which
 xz
@@ -67,7 +66,7 @@ docker-compose
 
 convenience="
 cyrus-sasl
-cyrus-sasl-gssapi
+cyrus-sasl-gssapiv2
 mutt
 rsync
 tmux

@@ -1,7 +1,6 @@
 #!/bin/sh
 set -x
 set -eu
-set -o pipefail
 #
 # Docker build calls this script to harden the image during build.
 #
@@ -28,7 +27,7 @@ apk add --no-cache \
   :
 
 # Download and install data for geoip.
-/etc/periodic/monthly/geoip
+/etc/periodic/weekly/libmaxminddb
 
 # shellcheck disable=SC2086,SC2154
 pip install \

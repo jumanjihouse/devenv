@@ -12,7 +12,7 @@ readonly allowed_countries="${ALLOWED_COUNTRIES:-.*}"
 client_ip=${SSH_CLIENT%% *}
 readonly client_ip
 
-client_country="$(geoiplookup "${client_ip}" | awk -F ": " '{ print $2 }' | awk -F "," '{ print $1 }' | head -n 1)"
+client_country="$(mmdblookup --file /var/lib/libmaxminddb/GeoLite2-City.mmdb --ip "${client_ip}" country names en | awk -F'"' '{print $2}')"
 readonly client_country
 
 allow=false
