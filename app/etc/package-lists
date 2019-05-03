@@ -36,11 +36,13 @@ go
 grep
 jq
 less
+libffi-dev
 lua-aports
 ncurses
 patch
 patchutils
 py2-pip
+python2-dev
 ruby
 ruby-bundler
 ruby-dev
