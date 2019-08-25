@@ -1,5 +1,5 @@
 essentials="
-bash>=4.4.19-r1
+bash>=5.0.0-r0
 bash-completion
 coreutils
 curl
