@@ -26,7 +26,7 @@ package:
   docker:
     installed: true
     versions:
-      - 18.09.5-r0
+      - 19.03.1-r2
 user:
   root:
     exists: true
