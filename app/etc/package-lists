@@ -49,6 +49,7 @@ ruby-dev
 ruby-etc
 ruby-irb
 ruby-json
+sqlite
 strace
 tar
 tree
