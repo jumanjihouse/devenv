@@ -12,7 +12,7 @@ libressl
 man
 man-pages
 mdocml-apropos
-openssh>=7.8_p1-r0
+openssh>=8.0_p1-r1
 openssh-client
 "
 
