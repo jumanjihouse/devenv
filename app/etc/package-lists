@@ -8,7 +8,7 @@ duo_unix>=1.11.2-r0
 findutils
 gnupg
 libmaxminddb
-libressl
+openssl
 man
 man-pages
 mdocml-apropos
@@ -39,6 +39,7 @@ less
 libffi-dev
 lua-aports
 ncurses
+openssl-dev
 patch
 patchutils
 py3-pip
