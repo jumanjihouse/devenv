@@ -41,8 +41,8 @@ lua-aports
 ncurses
 patch
 patchutils
-py2-pip
-python2-dev
+py3-pip
+python3-dev
 ruby
 ruby-bundler
 ruby-dev
