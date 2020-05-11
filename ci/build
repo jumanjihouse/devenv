@@ -13,10 +13,6 @@ declare -rx BUILD_DATE="$(date +%Y%m%dT%H%M)"
 declare -rx GIT_REF="$(git rev-parse --short HEAD)"
 declare -rx TAG=\${BUILD_DATE}-git-\${GIT_REF}
 declare -rx CI_BUILD_URL="${CIRCLE_BUILD_URL:-unknown}"
-
-# Which version of Docker do we install in the image?
-# Must match the check in app/etc/hc/build.d/goss.yaml
-declare -rx DOCKER_VERSION=19.03.1-r2
 EOF
 
 . ci/functions.sh
@@ -24,7 +20,6 @@ EOF
 
 run docker build \
   --rm \
-  --build-arg DOCKER_VERSION="${DOCKER_VERSION}" \
   --build-arg GIT_REF="${GIT_REF}" \
   --build-arg VERSION="${TAG}" \
   -t jumanjiman/devenv \

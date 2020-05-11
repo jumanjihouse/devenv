@@ -30,9 +30,7 @@ apk add --no-cache \
 /etc/periodic/weekly/libmaxminddb
 
 # shellcheck disable=SC2086,SC2154
-pip install \
-  ${pips} &&
-  :
+pip3 install -r /etc/requirements.txt
 
 (
   # Install Bash Automated Test System.

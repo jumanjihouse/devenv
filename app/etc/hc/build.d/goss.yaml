@@ -22,11 +22,11 @@ file:
     group: root
     filetype: file
     contains: []
+
 package:
   docker:
     installed: true
-    versions:
-      - 19.03.1-r2
+
 user:
   root:
     exists: true

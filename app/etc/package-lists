@@ -3,7 +3,7 @@ bash>=5.0.0-r0
 bash-completion
 coreutils
 curl
-docker=${DOCKER_VERSION}
+docker
 duo_unix>=1.11.2-r0
 findutils
 gnupg
@@ -62,10 +62,6 @@ wget
 which
 xz
 zip
-"
-
-pips="
-docker-compose
 "
 
 convenience="
