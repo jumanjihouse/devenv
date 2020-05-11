@@ -18,6 +18,8 @@ apk upgrade --no-cache --available
 
 # shellcheck disable=SC2086,SC2154
 apk add --no-cache \
+  -X http://dl-cdn.alpinelinux.org/alpine/v3.11/main \
+  -X http://dl-cdn.alpinelinux.org/alpine/v3.11/community \
   -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
   -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
   -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \

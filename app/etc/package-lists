@@ -68,6 +68,8 @@ convenience="
 cyrus-sasl
 cyrus-sasl-gssapiv2
 mutt
+pandoc
 rsync
+texlive
 tmux
 "
