@@ -3,12 +3,12 @@ bash>=5.0.0-r0
 bash-completion
 coreutils
 curl
-docker=${DOCKER_VERSION}
+docker
 duo_unix>=1.11.2-r0
 findutils
 gnupg
 libmaxminddb
-libressl
+openssl
 man
 man-pages
 mdocml-apropos
@@ -39,10 +39,11 @@ less
 libffi-dev
 lua-aports
 ncurses
+openssl-dev
 patch
 patchutils
-py2-pip
-python2-dev
+py3-pip
+python3-dev
 ruby
 ruby-bundler
 ruby-dev
@@ -63,14 +64,12 @@ xz
 zip
 "
 
-pips="
-docker-compose
-"
-
 convenience="
 cyrus-sasl
 cyrus-sasl-gssapiv2
 mutt
+pandoc
 rsync
+texlive
 tmux
 "

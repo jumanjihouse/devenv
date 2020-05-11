@@ -16,6 +16,7 @@ ARG DOCKER_VERSION
 
 # Copy files needed to run build script.
 COPY etc/package-lists /etc/
+COPY etc/requirements.txt /etc/
 COPY usr/sbin/build /usr/sbin/
 COPY usr/bin/github_pubkeys /usr/bin/
 

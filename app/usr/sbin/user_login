@@ -12,19 +12,6 @@ readonly allowed_countries="${ALLOWED_COUNTRIES:-.*}"
 client_ip=${SSH_CLIENT%% *}
 readonly client_ip
 
-client_country="$(mmdblookup --file /var/lib/libmaxminddb/GeoLite2-City.mmdb --ip "${client_ip}" country names en | awk -F'"' '{print $2}')"
-readonly client_country
-
-allow=false
-if [[ "${client_country}" =~ ${allowed_countries} ]]; then
-  allow=true
-fi
-readonly allow
-
-if [[ "${allow}" == false ]]; then
-  exit 1
-fi
-
 if [[ "${duo}" == true ]]; then
   exec /usr/sbin/login_duo -c "/etc/duo/${DUO_USERNAME}.conf" -f "${DUO_USERNAME}"
 else
