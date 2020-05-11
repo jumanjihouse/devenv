@@ -29,7 +29,9 @@ apk add --no-cache \
   :
 
 # Download and install data for geoip.
-/etc/periodic/weekly/libmaxminddb
+# Disable for now.
+# https://dev.maxmind.com/geoip/geoip2/geolite2/
+# /etc/periodic/weekly/libmaxminddb
 
 # shellcheck disable=SC2086,SC2154
 pip3 install -r /etc/requirements.txt
