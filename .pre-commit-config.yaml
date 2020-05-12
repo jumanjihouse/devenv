@@ -15,9 +15,10 @@ repos:
           - id: require-ascii
             exclude: ^ci/ansi$  # 3rd-party
           - id: script-must-have-extension
+            exclude: app/etc/skel/.*
           - id: script-must-not-have-extension
           - id: shellcheck
-            exclude: ^ci/ansi$  # 3rd-party
+            exclude: ^ci/ansi$|app/etc/skel/.*  # 3rd-party
           - id: shfmt
             exclude: ^ci/ansi$  # 3rd-party
 

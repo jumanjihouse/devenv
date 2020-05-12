@@ -7,10 +7,12 @@ set -o pipefail
 . /etc/devenv/user.conf
 
 readonly duo="${DUO:-true}"
-readonly allowed_countries="${ALLOWED_COUNTRIES:-.*}"
 
-client_ip=${SSH_CLIENT%% *}
-readonly client_ip
+# Disable for now.
+# To-do: re-enable geoip filter.
+#readonly allowed_countries="${ALLOWED_COUNTRIES:-.*}"
+#client_ip=${SSH_CLIENT%% *}
+#readonly client_ip
 
 if [[ "${duo}" == true ]]; then
   exec /usr/sbin/login_duo -c "/etc/duo/${DUO_USERNAME}.conf" -f "${DUO_USERNAME}"
