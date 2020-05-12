@@ -5,54 +5,59 @@
 fail_fast: false
 
 repos:
-  - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 2.0.2
-    hooks:
-      - id: check-mailmap
-      - id: forbid-binary
-      - id: git-check  # Configure in .gitattributes
-      - id: git-dirty  # Configure in .gitignore
-      - id: require-ascii
-        exclude: ^ci/ansi$  # 3rd-party
-      - id: script-must-have-extension
-      - id: script-must-not-have-extension
-      - id: shellcheck
-        exclude: ^ci/ansi$  # 3rd-party
-      - id: shfmt
-        exclude: ^ci/ansi$  # 3rd-party
+    - repo: https://github.com/jumanjihouse/pre-commit-hooks
+      rev: 2.0.2
+      hooks:
+          - id: check-mailmap
+          - id: forbid-binary
+          - id: git-check  # Configure in .gitattributes
+          - id: git-dirty  # Configure in .gitignore
+          - id: require-ascii
+            exclude: ^ci/ansi$  # 3rd-party
+          - id: script-must-have-extension
+          - id: script-must-not-have-extension
+          - id: shellcheck
+            exclude: ^ci/ansi$  # 3rd-party
+          - id: shfmt
+            exclude: ^ci/ansi$  # 3rd-party
 
-  - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.23.0
-    hooks:
-      - id: yamllint
-        args: ['--format', 'parsable', '--strict']
+    - repo: https://github.com/adrienverge/yamllint.git
+      rev: v1.23.0
+      hooks:
+          - id: yamllint
+            args: [--format, parsable, --strict]
 
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.5.0
-    hooks:
-      - id: check-added-large-files
-      - id: check-case-conflict
-      - id: check-executables-have-shebangs
-      - id: check-json
-      - id: check-merge-conflict
-      - id: check-xml
-      - id: check-yaml
-      - id: detect-private-key
+    - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+      rev: 0.0.10  # or specific tag
+      hooks:
+          - id: yamlfmt
 
-  - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.7
-    hooks:
-      - id: forbid-crlf
-      - id: forbid-tabs
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v2.5.0
+      hooks:
+          - id: check-added-large-files
+          - id: check-case-conflict
+          - id: check-executables-have-shebangs
+          - id: check-json
+          - id: check-merge-conflict
+          - id: check-xml
+          - id: check-yaml
+          - id: detect-private-key
 
-  - repo: https://github.com/jorisroovers/gitlint
-    rev: v0.13.1
-    hooks:
-      - id: gitlint
-        stages: [commit-msg]
+    - repo: https://github.com/Lucas-C/pre-commit-hooks
+      rev: v1.1.7
+      hooks:
+          - id: forbid-crlf
+          - id: forbid-tabs
 
-      - id: gitlint
-        entry: gitlint --commits upstream/master..
-        exclude: .*
-        always_run: true
-        stages: [manual]
+    - repo: https://github.com/jorisroovers/gitlint
+      rev: v0.13.1
+      hooks:
+          - id: gitlint
+            stages: [commit-msg]
+
+          - id: gitlint
+            entry: gitlint --commits upstream/master..
+            exclude: .*
+            always_run: true
+            stages: [manual]

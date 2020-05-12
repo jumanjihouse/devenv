@@ -1,58 +1,58 @@
 ---
 command:
-  timeout -k5 -s9 2 bash -c 'cat <(ls /etc)':
-    title: bash should not hang
-    meta:
-      desc: https://github.com/gliderlabs/docker-alpine/issues/363
-      sev: 1
-    exit-status: 0
-    stdout:
-      - sysctl.conf
+    timeout -k5 -s9 2 bash -c 'cat <(ls /etc)':
+        title: bash should not hang
+        meta:
+            desc: https://github.com/gliderlabs/docker-alpine/issues/363
+            sev: 1
+        exit-status: 0
+        stdout:
+            - sysctl.conf
 
-  command -v docker-compose:
-    title: docker-compose exists and is in PATH
-    exit-status: 0
+    command -v docker-compose:
+        title: docker-compose exists and is in PATH
+        exit-status: 0
 
 file:
-  /etc/passwd:
-    exists: true
-    mode: "0644"
-    size: 130
-    owner: root
-    group: root
-    filetype: file
-    contains: []
+    /etc/passwd:
+        exists: true
+        mode: '0644'
+        size: 130
+        owner: root
+        group: root
+        filetype: file
+        contains: []
 
 package:
-  docker:
-    installed: true
+    docker:
+        installed: true
 
 user:
-  root:
-    exists: true
-    uid: 0
-    gid: 0
-    groups:
-      - root
-    home: /root
-    shell: /sbin/nologin
-  sshd:
-    exists: true
-    uid: 22
-    gid: 22
-    groups:
-      - sshd
-    home: /dev/null
-    shell: /sbin/nologin
-  user:
-    exists: true
-    uid: 1000
-    gid: 1000
-    groups:
-      - user
-    home: /home/user
-    shell: /bin/bash
+    root:
+        exists: true
+        uid: 0
+        gid: 0
+        groups:
+            - root
+        home: /root
+        shell: /sbin/nologin
+    sshd:
+        exists: true
+        uid: 22
+        gid: 22
+        groups:
+            - sshd
+        home: /dev/null
+        shell: /sbin/nologin
+    user:
+        exists: true
+        uid: 1000
+        gid: 1000
+        groups:
+            - user
+        home: /home/user
+        shell: /bin/bash
 group:
-  sshd:
-    exists: true
-    gid: 22
+    sshd:
+        exists: true
+        gid: 22
