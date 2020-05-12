@@ -6,7 +6,7 @@ fail_fast: false
 
 repos:
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 1.10.2
+    rev: 2.0.2
     hooks:
       - id: check-mailmap
       - id: forbid-binary
@@ -22,13 +22,13 @@ repos:
         exclude: ^ci/ansi$  # 3rd-party
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.11.1
+    rev: v1.23.0
     hooks:
       - id: yamllint
         args: ['--format', 'parsable', '--strict']
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v1.4.0-1
+    rev: v2.5.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -40,13 +40,13 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.5
+    rev: v1.1.7
     hooks:
       - id: forbid-crlf
       - id: forbid-tabs
 
   - repo: https://github.com/jorisroovers/gitlint
-    rev: v0.10.0
+    rev: v0.13.1
     hooks:
       - id: gitlint
         stages: [commit-msg]
