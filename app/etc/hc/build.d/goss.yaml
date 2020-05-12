@@ -13,6 +13,14 @@ command:
         title: docker-compose exists and is in PATH
         exit-status: 0
 
+    command -v lualatex:
+        title: lualatex engine exists and is in PATH
+        exit-status: 0
+
+    command -v xelatex:
+        title: xelatex engine exists and is in PATH
+        exit-status: 0
+
 file:
     /etc/passwd:
         exists: true

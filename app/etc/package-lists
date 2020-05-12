@@ -70,6 +70,6 @@ cyrus-sasl-gssapiv2
 mutt
 pandoc
 rsync
-texlive
+texlive-full
 tmux
 "
