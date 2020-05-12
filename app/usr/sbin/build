@@ -25,8 +25,8 @@ apk add --no-cache \
   -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
   ${essentials} \
   ${devtools} \
-  ${convenience} &&
-  :
+  ${convenience} \
+  && :
 
 # Download and install data for geoip.
 # Disable for now.

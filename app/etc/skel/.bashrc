@@ -32,13 +32,13 @@ export EDITOR=vim
 export GIT_EDITOR=vim
 
 # Customize the prompt for git.
-function parse_git_dirty {
+function parse_git_dirty() {
   #regex="nothing to commit.*working directory clean"
   regex="nothing to commit.*working tree clean"
-  [[ $(git status 2> /dev/null | tail -n1) =~ $regex ]] || echo "*"
+  [[ $(git status 2>/dev/null | tail -n1) =~ $regex ]] || echo "*"
 }
-function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
+function parse_git_branch() {
+  git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
 }
 export CLICOLOR=1
 export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]\$(parse_git_branch)\$ "
