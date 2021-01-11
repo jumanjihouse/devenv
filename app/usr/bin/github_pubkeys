@@ -5,7 +5,15 @@ set -o pipefail
 # This file is bound into the runtime container by systemd.
 . /etc/devenv/user.conf
 
-URL="https://api.github.com/users/${GITHUB_HANDLE}/keys"
-/usr/bin/curl --max-time 15 -sS -L "${URL}" | /usr/bin/jq -r '.[].key'
+if ! [[ "${GITLAB_HANDLE:-unset}" == unset ]]; then
+  URL="https://${GITLAB_HOST:-gitlab.com}/${GITLAB_HANDLE}.keys"
+  /usr/bin/curl --max-time 15 -sS -L "${URL}"
+fi
+
+if ! [[ "${GITHUB_HANDLE:-unset}" == unset ]]; then
+  URL="https://api.github.com/users/${GITHUB_HANDLE}/keys"
+  /usr/bin/curl --max-time 15 -sS -L "${URL}" | /usr/bin/jq -r '.[].key'
+fi
+
 [[ -r /home/user/.ssh/authorized_keys ]] && cat /home/user/.ssh/authorized_keys
 :
