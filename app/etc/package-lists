@@ -39,6 +39,7 @@ less
 libffi-dev
 lua-aports
 ncurses
+neovim
 openssl-dev
 patch
 patchutils
