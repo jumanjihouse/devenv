@@ -9,6 +9,8 @@ set -x
 # - IKEY
 # - SKEY
 GITHUB_HANDLE="${GITHUB_HANDLE:-}"
+GITLAB_HANDLE="${GITLAB_HANDLE:-}"
+GITLAB_HOST="${GITLAB_HOST:-}"
 DUO_USERNAME="${DUO_USERNAME:-}"
 IKEY="${IKEY:-}"
 SKEY="${SKEY:-}"
@@ -23,7 +25,7 @@ for key_type in ed25519 rsa; do
 done
 
 mkdir -p /home/user/.ssh/ || :
-if [ -n "${GITHUB_HANDLE}" ]; then
+if [ -n "${GITHUB_HANDLE}" ] || [ -n "${GITLAB_HANDLE}" ]; then
   (
     keyfile=/home/user/.ssh/authorized_keys
     IFS=$'\n'
