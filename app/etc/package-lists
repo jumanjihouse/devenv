@@ -43,6 +43,7 @@ neovim
 openssl-dev
 patch
 patchutils
+postgresql-dev
 py3-pip
 python3-dev
 ruby
