@@ -4,6 +4,7 @@ bash-completion
 coreutils
 curl
 docker
+docker-compose>=1.27.4-r0
 duo_unix>=1.11.2-r0
 findutils
 gnupg
@@ -43,6 +44,7 @@ neovim
 openssl-dev
 patch
 patchutils
+postgresql-dev
 py3-pip
 python3-dev
 ruby
