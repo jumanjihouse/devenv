@@ -9,6 +9,10 @@ command:
         stdout:
             - sysctl.conf
 
+    command -v docker:
+        title: docker exists and is in PATH
+        exit-status: 0
+
     command -v docker-compose:
         title: docker-compose exists and is in PATH
         exit-status: 0
@@ -30,10 +34,6 @@ file:
         group: root
         filetype: file
         contains: []
-
-package:
-    docker:
-        installed: true
 
 user:
     root:

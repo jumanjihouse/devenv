@@ -18,22 +18,26 @@ apk upgrade --no-cache --available
 
 # shellcheck disable=SC2086,SC2154
 apk add --no-cache \
-  -X http://dl-cdn.alpinelinux.org/alpine/v3.11/main \
-  -X http://dl-cdn.alpinelinux.org/alpine/v3.11/community \
-  -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
-  -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
-  -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+  -X http://dl-cdn.alpinelinux.org/alpine/v3.13/main \
+  -X http://dl-cdn.alpinelinux.org/alpine/v3.13/community \
   ${essentials} \
   ${devtools} \
   ${convenience} \
   && :
+
+# shellcheck disable=SC2086,SC2154
+apk add --no-cache \
+  -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
+  -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
+  -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+  ${testing}
 
 # Download and install data for geoip.
 # Disable for now.
 # https://dev.maxmind.com/geoip/geoip2/geolite2/
 # /etc/periodic/weekly/libmaxminddb
 
-# shellcheck disable=SC2086,SC2154
+pip3 install --upgrade pip setuptools wheel
 pip3 install -r /etc/requirements.txt
 
 (
