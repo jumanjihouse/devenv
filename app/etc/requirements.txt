@@ -1,2 +1,2 @@
-docker-compose
+docker-compose==1.28.0
 tsrc==2.2.0
