@@ -15,7 +15,12 @@ readonly duo="${DUO:-true}"
 #readonly client_ip
 
 if [[ "${duo}" == true ]]; then
+  # login_duo handles both interactive and scp.
   exec /usr/sbin/login_duo -c "/etc/duo/${DUO_USERNAME}.conf" -f "${DUO_USERNAME}"
+elif [[ -n "${SSH_ORIGINAL_COMMAND:-}" ]]; then
+  # Allow scp without duo.
+  exec /bin/bash -c "${SSH_ORIGINAL_COMMAND}"
 else
+  # Interactive shell.
   exec /bin/bash -l
 fi
