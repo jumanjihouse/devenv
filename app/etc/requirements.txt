@@ -1,1 +1,2 @@
 docker-compose
+tsrc==2.2.0
