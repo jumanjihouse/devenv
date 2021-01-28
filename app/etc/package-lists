@@ -26,6 +26,7 @@ docker-bash-completion
 editorconfig
 expect
 file
+gettext
 git
 git-bash-completion
 git-perl
