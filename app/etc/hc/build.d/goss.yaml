@@ -17,6 +17,10 @@ command:
         title: docker-compose exists and is in PATH
         exit-status: 0
 
+    command -v envsubst:
+        title: envsubst command exists and is in PATH
+        exit-status: 0
+
     command -v lualatex:
         title: lualatex engine exists and is in PATH
         exit-status: 0
