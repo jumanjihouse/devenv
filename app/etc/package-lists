@@ -106,17 +106,20 @@ zip-doc
 "
 
 convenience="
+consul
 cyrus-sasl
 cyrus-sasl-doc
 cyrus-sasl-gssapiv2
 mutt
 mutt-doc
+nomad
 rsync
 rsync-doc
 texlive-doc
 texlive-full
 tmux
 tmux-doc
+vault
 "
 
 testing="
