@@ -32,6 +32,14 @@ apk add --no-cache \
   -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
   ${testing}
 
+# Fixup for vault client.
+# https://github.com/hashicorp/vault/issues/10048#issuecomment-700779263
+setcap cap_ipc_lock= /usr/sbin/vault
+
+# https://www.python.org/dev/peps/pep-0394/#recommendation
+# Be kind to drive-by python scripters.
+ln -s /usr/bin/python3 /usr/bin/python
+
 # Download and install data for geoip.
 # Disable for now.
 # https://dev.maxmind.com/geoip/geoip2/geolite2/
@@ -61,6 +69,13 @@ curl -L -o /usr/share/bash-completion/completions/tmux \
 
 adduser -D -s /bin/bash -u 1000 user
 sed -i -r 's/^user:!:/user:x:/' /etc/shadow
+
+# Ensure user can run consul queries.
+#
+# Perms from the packaged version:
+#     $ ls -lh /usr/sbin/consul
+#     -rwxr-x--- 1 root 101 100M Dec 18 13:44 /usr/sbin/consul
+usermod -aG 101 user
 
 # Avoid error `Only root may specify -c or -f` when using
 # ForceCommand with `-f` option at non-root ssh login.
