@@ -31,6 +31,9 @@ devtools="
 bind-tools
 bind-doc
 build-base
+cargo
+cargo-bash-completions
+cargo-doc
 checkbashisms
 diffutils
 diffutils-doc
@@ -80,6 +83,10 @@ ruby-dev
 ruby-etc
 ruby-irb
 ruby-json
+rust
+rust-doc
+rust-gdb
+rust-lldb
 sqlite
 sqlite-doc
 strace
@@ -106,17 +113,20 @@ zip-doc
 "
 
 convenience="
+consul
 cyrus-sasl
 cyrus-sasl-doc
 cyrus-sasl-gssapiv2
 mutt
 mutt-doc
+nomad
 rsync
 rsync-doc
 texlive-doc
 texlive-full
 tmux
 tmux-doc
+vault
 "
 
 testing="
