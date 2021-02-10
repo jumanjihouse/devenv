@@ -32,6 +32,10 @@ apk add --no-cache \
   -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
   ${testing}
 
+# Fixup for vault client.
+# https://github.com/hashicorp/vault/issues/10048#issuecomment-700779263
+setcap cap_ipc_lock= /usr/sbin/vault
+
 # Download and install data for geoip.
 # Disable for now.
 # https://dev.maxmind.com/geoip/geoip2/geolite2/

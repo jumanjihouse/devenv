@@ -15,6 +15,8 @@ findutils
 findutils-doc
 gnupg
 gnupg-doc
+libcap
+libcap-doc
 libmaxminddb
 libmaxminddb-doc
 openssl
