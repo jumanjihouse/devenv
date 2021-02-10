@@ -27,6 +27,7 @@ man-pages
 openssh>=8.0_p1-r1
 openssh-doc
 openssh-client
+shadow
 "
 
 devtools="

@@ -29,6 +29,14 @@ command:
         title: xelatex engine exists and is in PATH
         exit-status: 0
 
+    command -v consul:
+        title: consul client exists and is in PATH
+        exit-status: 0
+
+    consul -h:
+        title: consul client shows help in container
+        exit-status: 0
+
     vault -h:
         title: vault client runs and shows help in container
         exit-status: 0

@@ -66,6 +66,13 @@ curl -L -o /usr/share/bash-completion/completions/tmux \
 adduser -D -s /bin/bash -u 1000 user
 sed -i -r 's/^user:!:/user:x:/' /etc/shadow
 
+# Ensure user can run consul queries.
+#
+# Perms from the packaged version:
+#     $ ls -lh /usr/sbin/consul
+#     -rwxr-x--- 1 root 101 100M Dec 18 13:44 /usr/sbin/consul
+usermod -aG 101 user
+
 # Avoid error `Only root may specify -c or -f` when using
 # ForceCommand with `-f` option at non-root ssh login.
 # https://www.duosecurity.com/docs/duounix-faq#can-i-use-login_duo-to-protect-non-root-shared-accounts,-or-can-i-do-an-install-without-root-privileges?
