@@ -36,6 +36,10 @@ apk add --no-cache \
 # https://github.com/hashicorp/vault/issues/10048#issuecomment-700779263
 setcap cap_ipc_lock= /usr/sbin/vault
 
+# https://www.python.org/dev/peps/pep-0394/#recommendation
+# Be kind to drive-by python scripters.
+ln -s /usr/bin/python3 /usr/bin/python
+
 # Download and install data for geoip.
 # Disable for now.
 # https://dev.maxmind.com/geoip/geoip2/geolite2/
