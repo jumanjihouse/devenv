@@ -13,6 +13,7 @@ duo_unix>=1.11.2-r0
 duo_unix-doc
 findutils
 findutils-doc
+findutils-locate
 gnupg
 gnupg-doc
 libcap
@@ -20,7 +21,6 @@ libcap-doc
 libmaxminddb
 libmaxminddb-doc
 openssl
-openssl-doc
 mandoc
 mandoc-apropos
 man-pages

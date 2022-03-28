@@ -1,4 +1,4 @@
-FROM alpine:3.13.0
+FROM alpine:3.15.2
 
 EXPOSE 2222
 ENV LANG C
