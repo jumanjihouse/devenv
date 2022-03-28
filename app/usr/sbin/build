@@ -45,8 +45,8 @@ ln -s /usr/bin/python3 /usr/bin/python
 # https://dev.maxmind.com/geoip/geoip2/geolite2/
 # /etc/periodic/weekly/libmaxminddb
 
-pip3 install --upgrade pip setuptools wheel
-pip3 install -r /etc/requirements.txt
+pip3 install --no-cache-dir --upgrade pip setuptools wheel
+pip3 install --no-cache-dir -r /etc/requirements.txt
 
 (
   # Install Bash Automated Test System.
