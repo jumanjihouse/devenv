@@ -11,7 +11,7 @@ if ! [[ "${GITLAB_HANDLE:-unset}" == unset ]]; then
 fi
 
 if ! [[ "${GITHUB_HANDLE:-unset}" == unset ]]; then
-  URL="https://${GITHUB_HOST}:-github.com}/${GITHUB_HANDLE}.keys"
+  URL="https://${GITHUB_HOST:-github.com}/${GITHUB_HANDLE}.keys"
   /usr/bin/curl --max-time 15 -sS -L "${URL}"
 fi
 
