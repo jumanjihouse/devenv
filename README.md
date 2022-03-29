@@ -13,14 +13,10 @@ Source: https://github.com/jumanjihouse/devenv
 Docker Hub:
 
 * https://registry.hub.docker.com/u/jumanjiman/devenv/<br/>
-  [![Download size](https://images.microbadger.com/badges/image/jumanjiman/devenv.svg)](http://microbadger.com/images/jumanjiman/devenv "View on microbadger.com")&nbsp;
-  [![Version](https://images.microbadger.com/badges/version/jumanjiman/devenv.svg)](http://microbadger.com/images/jumanjiman/devenv "View on microbadger.com")&nbsp;
   [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/devenv.svg)](https://registry.hub.docker.com/u/jumanjiman/devenv 'Docker Hub')&nbsp;
   [![Circle CI](https://circleci.com/gh/jumanjihouse/devenv.png?style=svg&circle-token=b4d2a18e7ef854f112dad2d5f426d026ee38ca8c)](https://circleci.com/gh/jumanjihouse/devenv/tree/master 'View CI builds')
 
 * https://registry.hub.docker.com/u/jumanjiman/state/<br/>
-  [![Download size](https://images.microbadger.com/badges/image/jumanjiman/state.svg)](http://microbadger.com/images/jumanjiman/state "View on microbadger.com")&nbsp;
-  [![Version](https://images.microbadger.com/badges/version/jumanjiman/state.svg)](http://microbadger.com/images/jumanjiman/state "View on microbadger.com")&nbsp;
   [![Docker Registry](https://img.shields.io/docker/pulls/jumanjiman/state.svg)](https://registry.hub.docker.com/u/jumanjiman/state 'Docker Hub')&nbsp;
   [![Circle CI](https://circleci.com/gh/jumanjihouse/devenv.png?style=svg&circle-token=b4d2a18e7ef854f112dad2d5f426d026ee38ca8c)](https://circleci.com/gh/jumanjihouse/devenv/tree/master 'View CI builds')
 
